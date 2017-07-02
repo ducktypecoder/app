@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 
 import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 
 const Projects = new Mongo.Collection('Projects');
@@ -43,6 +44,24 @@ Projects.schema = new SimpleSchema({
   description: {
     type: String,
     label: 'The description of the project.',
+  },
+  steps: {
+    type: Array,
+  },
+  'steps.$': {
+    type: Object,
+  },
+  'steps.$.order': {
+    type: Number,
+    label: 'The order of this step in relation to other steps',
+  },
+  'steps.$.content': {
+    type: String,
+    label: 'Content for this step',
+  },
+  'steps.$.answer': {
+    type: String,
+    label: 'The correct answer to solve this step',
   },
 });
 

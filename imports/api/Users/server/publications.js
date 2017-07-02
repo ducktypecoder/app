@@ -9,3 +9,7 @@ Meteor.publish('users.editProfile', function usersProfile() {
     },
   });
 });
+
+Meteor.publish('users.projectAnswers', function userAnswers() {
+  return Meteor.users.find(this.userId, { fields: { projects: 1 } });
+});

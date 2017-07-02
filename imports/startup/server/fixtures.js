@@ -29,6 +29,13 @@ seeder(Projects, {
       author: 'foobar jones',
       title: `Project #${projectCount + 1}`,
       description: `This is the description of project #${projectCount + 1}`,
+      steps: [
+        { order: 1, content: 'This is step 1', answer: 'foobar1' },
+        { order: 2, content: 'This is step 2', answer: 'foobar2' },
+        { order: 3, content: 'This is step 3', answer: 'foobar3' },
+        { order: 4, content: 'This is step 4', answer: 'foobar4' },
+        { order: 5, content: 'This is step 5', answer: 'foobar5' },
+      ],
     };
   },
 });

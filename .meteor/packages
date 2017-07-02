@@ -34,3 +34,6 @@ ddp-rate-limiter@1.0.7
 dynamic-import
 static-html
 meteortoys:allthings
+dburles:collection-helpers
+practicalmeteor:chai
+practicalmeteor:mocha

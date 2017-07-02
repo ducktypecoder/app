@@ -11,6 +11,8 @@ import Public from '../../components/Public/Public';
 import Index from '../../pages/Index/Index';
 
 import Projects from '../../pages/Projects/Projects';
+import ViewProject from '../../pages/ViewProject/ViewProject';
+
 import Documents from '../../pages/Documents/Documents';
 import NewDocument from '../../pages/NewDocument/NewDocument';
 import ViewDocument from '../../pages/ViewDocument/ViewDocument';

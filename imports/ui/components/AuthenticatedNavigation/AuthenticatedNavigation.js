@@ -4,9 +4,12 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 
-const AuthenticatedNavigation = ({ name }) => (
-  <div>
+const AuthenticatedNavigation = ({ name }) =>
+  (<div>
     <Nav>
+      <LinkContainer to="/projects">
+        <NavItem href="/projects">Projects</NavItem>
+      </LinkContainer>
       <LinkContainer to="/documents">
         <NavItem eventKey={1} href="/documents">Documents</NavItem>
       </LinkContainer>
@@ -17,11 +20,12 @@ const AuthenticatedNavigation = ({ name }) => (
           <NavItem eventKey={2.1} href="/profile">Profile</NavItem>
         </LinkContainer>
         <MenuItem divider />
-        <MenuItem eventKey={2.2} onClick={() => Meteor.logout()}>Logout</MenuItem>
+        <MenuItem eventKey={2.2} onClick={() => Meteor.logout()}>
+          Logout
+        </MenuItem>
       </NavDropdown>
     </Nav>
-  </div>
-);
+  </div>);
 
 AuthenticatedNavigation.propTypes = {
   name: PropTypes.string.isRequired,

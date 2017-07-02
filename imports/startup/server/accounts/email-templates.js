@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-const name = 'Application Name';
-const email = '<support@application.com>';
+const name = 'ducktypecoder';
+const email = '<support@ducktypecoder.com>';
 const from = `${name} ${email}`;
 const emailTemplates = Accounts.emailTemplates;
 
@@ -17,7 +17,7 @@ emailTemplates.resetPassword = {
     const userEmail = user.emails[0].address;
     const urlWithoutHash = url.replace('#/', '');
 
-    if (Meteor.isDevelopment) console.info(`Reset Password Link: ${urlWithoutHash}`);
+    if (Meteor.isDevelopment) { console.info(`Reset Password Link: ${urlWithoutHash}`); }
 
     return `A password reset has been requested for the account related to this
     address (${userEmail}). To reset the password, visit the following link:

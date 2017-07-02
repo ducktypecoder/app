@@ -3,22 +3,21 @@ import { Button } from 'react-bootstrap';
 
 import './Index.scss';
 
-const Index = () => (
-  <div className="Index">
+const Index = () =>
+  (<div className="Index">
     <img
-      src="https://s3-us-west-2.amazonaws.com/cleverbeagle-assets/graphics/email-icon.png"
-      alt="Clever Beagle"
+      src="http://www.animatedimages.org/data/media/481/animated-duck-image-0065.gif"
+      alt="little rubber ducky"
     />
-    <h1>Pup</h1>
-    <p>A boilerplate for products.</p>
-    <div>
-      <Button href="http://cleverbeagle.com/pup">Read the Docs</Button>
-      <Button href="https://github.com/cleverbeagle/pup"><i className="fa fa-star" /> Star on GitHub</Button>
-    </div>
+
+    <h1>ducktypecoder</h1>
+    <p>
+      Develop a practice project on your machine and track your progress in the
+      cloud.
+    </p>
     <footer>
-      <p>Need help and want to stay accountable building your product? <a href="http://cleverbeagle.com?utm_source=pupappindex&utm_campaign=oss">Check out Clever Beagle</a>.</p>
+      <p>Creating practice projects ongoing.</p>
     </footer>
-  </div>
-);
+  </div>);
 
 export default Index;

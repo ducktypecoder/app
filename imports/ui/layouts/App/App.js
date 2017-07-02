@@ -9,10 +9,13 @@ import Navigation from '../../components/Navigation/Navigation';
 import Authenticated from '../../components/Authenticated/Authenticated';
 import Public from '../../components/Public/Public';
 import Index from '../../pages/Index/Index';
+
+import Projects from '../../pages/Projects/Projects';
 import Documents from '../../pages/Documents/Documents';
 import NewDocument from '../../pages/NewDocument/NewDocument';
 import ViewDocument from '../../pages/ViewDocument/ViewDocument';
 import EditDocument from '../../pages/EditDocument/EditDocument';
+
 import Signup from '../../pages/Signup/Signup';
 import Login from '../../pages/Login/Login';
 import Logout from '../../pages/Logout/Logout';
@@ -23,10 +26,10 @@ import NotFound from '../../pages/NotFound/NotFound';
 import Footer from '../../components/Footer/Footer';
 import Terms from '../../pages/Terms/Terms';
 import Privacy from '../../pages/Privacy/Privacy';
-import ExamplePage from '../../pages/ExamplePage/ExamplePage';
 
 import './App.scss';
 
+// prettier-ignore
 const App = props => (
   <Router>
     {!props.loading ? <div className="App">
@@ -34,6 +37,7 @@ const App = props => (
       <Grid>
         <Switch>
           <Route exact name="index" path="/" component={Index} />
+          <Route exact path="/projects" component={Projects} {...props} />
           <Authenticated exact path="/documents" component={Documents} {...props} />
           <Authenticated exact path="/documents/new" component={NewDocument} {...props} />
           <Authenticated exact path="/documents/:_id" component={ViewDocument} {...props} />
@@ -46,7 +50,6 @@ const App = props => (
           <Route name="reset-password" path="/reset-password/:token" component={ResetPassword} />
           <Route name="terms" path="/terms" component={Terms} />
           <Route name="privacy" path="/privacy" component={Privacy} />
-          <Route name="examplePage" path="/example-page" component={ExamplePage} />
           <Route component={NotFound} />
         </Switch>
       </Grid>
@@ -59,17 +62,19 @@ App.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-const getUserName = name => ({
-  string: name,
-  object: `${name.first} ${name.last}`,
-}[typeof name]);
+const getUserName = name =>
+  ({
+    string: name,
+    object: `${name.first} ${name.last}`,
+  }[typeof name]);
 
 export default createContainer(() => {
   const loggingIn = Meteor.loggingIn();
   const user = Meteor.user();
   const userId = Meteor.userId();
   const loading = !Roles.subscription.ready();
-  const name = user && user.profile && user.profile.name && getUserName(user.profile.name);
+  const name =
+    user && user.profile && user.profile.name && getUserName(user.profile.name);
   const emailAddress = user && user.emails && user.emails[0].address;
 
   return {

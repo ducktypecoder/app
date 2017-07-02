@@ -1,5 +1,5 @@
 {
-  "name": "pup",
+  "name": "ducktypecoder-app",
   "private": true,
   "scripts": {
     "start": "meteor --settings settings-development.json",

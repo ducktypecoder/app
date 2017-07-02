@@ -11,6 +11,7 @@ import './Projects.scss';
 
 function Projects({ loading, projects, match, history }) {
   if (loading) return <Loading />;
+
   return (
     <div className="Projects">
       <div className="page-header clearfix">

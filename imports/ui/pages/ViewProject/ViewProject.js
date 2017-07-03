@@ -8,6 +8,7 @@ import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
 
+// TODO: refactor this into a reusable module
 function nextUnansweredStep(project) {
   if (!project) return {};
 

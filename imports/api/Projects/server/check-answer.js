@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import Projects from '../Projects';
 
 function updateUserAnswer(user, project, step, answer) {
-  console.log('updateUserAnswer');
   const userProjects = user.projects;
   const userRecordForProject = userProjects.find(p => p._id == project);
   if (!userRecordForProject) userProjects.push({ _id: project, answers: [] });
@@ -11,9 +10,6 @@ function updateUserAnswer(user, project, step, answer) {
   if (answerForStep) return; // already answered, we're done.
 
   userRecordForProject.answers.push({ order: step, answer });
-
-  console.log('userProjects: ', userProjects);
-  console.log('userRecordForProject', userRecordForProject);
 
   Meteor.users.update(
     { _id: user._id },

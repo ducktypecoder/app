@@ -20,14 +20,18 @@ function nextUnansweredStep(project) {
 
   // get the answers that the user has submitted for this project
   const userProjectRecord = user.projects.filter(p => p._id == project._id)[0];
+  console.log({ userProjectRecord });
+  if (!userProjectRecord) return orderedSteps[0];
   const userAnswers = userProjectRecord.answers;
+  console.log({ userAnswers });
 
   // in the user's answers, get the highest ordered step that has been answered
-  const step = userAnswers.sort(s => s.order).reverse()[0];
-
+  const step = userAnswers.sort(s => s.order)[0];
+  console.log({ step });
   // return the step that comes next (step order is 1 based,
   // but orderedSteps array indices are 0 based)
-  return orderedSteps[step.order];
+  console.log(orderedSteps[Number(step.order)]);
+  return orderedSteps[Number(step.order)];
 }
 
 function answeredSteps(nextUnansweredStep, project) {

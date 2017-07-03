@@ -3,8 +3,6 @@ import { Meteor } from 'meteor/meteor';
 import Documents from '../../api/Documents/Documents';
 import Projects from '../../api/Projects/Projects';
 
-console.log('app/imports/startup/fixtures.js');
-
 const documentsSeed = userId => ({
   collection: Documents,
   environments: ['development', 'staging'],

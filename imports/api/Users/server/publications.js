@@ -6,6 +6,7 @@ Meteor.publish('users.editProfile', function usersProfile() {
       emails: 1,
       profile: 1,
       services: 1,
+      token: 1,
     },
   });
 });

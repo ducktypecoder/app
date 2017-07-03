@@ -1,5 +1,6 @@
 import seeder from '@cleverbeagle/seeder';
 import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
 import Documents from '../../api/Documents/Documents';
 import Projects from '../../api/Projects/Projects';
 
@@ -38,13 +39,24 @@ seeder(Projects, {
   },
 });
 
+function setToken(userId) {
+  const newToken = Random.id(); // TODO: generate random api token
+  Meteor.users.update(
+    { _id: userId },
+    {
+      $set: { token: newToken },
+    },
+  );
+}
+
 seeder(Meteor.users, {
   environments: ['development', 'staging'],
   noLimit: true,
   data: [
     {
-      email: 'admin@admin.com',
-      password: 'password',
+      email: 'admin@test.com',
+      password: 'testtest',
+      token: Random.id(),
       profile: {
         name: {
           first: 'Andy',
@@ -53,6 +65,7 @@ seeder(Meteor.users, {
       },
       roles: ['admin'],
       data(userId) {
+        setToken(userId);
         return documentsSeed(userId);
       },
     },
@@ -62,7 +75,7 @@ seeder(Meteor.users, {
     const userCount = index + 1;
     return {
       email: `user+${userCount}@test.com`,
-      password: 'password',
+      password: 'testtest',
       profile: {
         name: {
           first: faker.name.firstName(),
@@ -71,6 +84,7 @@ seeder(Meteor.users, {
       },
       roles: ['user'],
       data(userId) {
+        setToken(userId);
         return documentsSeed(userId);
       },
     };

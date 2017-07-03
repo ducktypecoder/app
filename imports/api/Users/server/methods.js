@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
+import { Random } from 'meteor/random';
 import editProfile from './edit-profile';
 import rateLimit from '../../../modules/rate-limit';
 
@@ -21,6 +22,15 @@ Meteor.methods({
       .catch((exception) => {
         throw new Meteor.Error('500', exception);
       });
+  },
+  'users.resetToken': function usersResetToken() {
+    const newToken = Random.id(); // TODO: generate random api token
+    Meteor.users.update(
+      { _id: this.userId },
+      {
+        $set: { token: newToken },
+      },
+    );
   },
 });
 

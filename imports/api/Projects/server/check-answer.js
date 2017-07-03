@@ -2,9 +2,13 @@ import { Meteor } from 'meteor/meteor';
 import Projects from '../Projects';
 
 function updateUserAnswer(user, project, step, answer) {
-  const userProjects = user.projects;
-  const userRecordForProject = userProjects.find(p => p._id == project);
-  if (!userRecordForProject) userProjects.push({ _id: project, answers: [] });
+  const userProjects = user.projects || [];
+  let userRecordForProject = userProjects.find(p => p._id == project);
+
+  if (!userRecordForProject) {
+    userProjects.push({ _id: project, answers: [] });
+    userRecordForProject = userProjects.find(p => p._id == project);
+  }
 
   const answerForStep = userRecordForProject.answers.find(a => a.order == step);
   if (answerForStep) return; // already answered, we're done.

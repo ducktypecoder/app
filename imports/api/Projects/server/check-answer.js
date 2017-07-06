@@ -1,20 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 import Projects from '../Projects';
 
-function updateUserAnswer(user, project, step, answer) {
+function updateUserAnswer(user, projectDoc, step, answer) {
   const userProjects = user.projects || [];
-  let userRecordForProject = userProjects.find(p => p._id == project);
+  let userRecordForProject = userProjects.find(p => p._id == projectDoc._id);
 
   if (!userRecordForProject) {
-    userProjects.push({ _id: project, answers: [] });
-    userRecordForProject = userProjects.find(p => p._id == project);
+    userProjects.push({ _id: projectDoc._id, answers: [] });
+    userRecordForProject = userProjects.find(p => p._id == projectDoc._id);
   }
 
-  const answerForStep = userRecordForProject.answers.find(a => a.order == step);
-  if (answerForStep) return; // already answered, we're done.
+  const exisitingAnswer = userRecordForProject.answers.find(
+    a => a.order == step,
+  );
+  if (exisitingAnswer) return; // already answered, we're done.
 
-  userRecordForProject.answers.push({ order: step, answer });
+  const newAnswer = { order: step, answer };
 
+  // TODO: refactor here to use Answers collection rather than append to user.
+  userRecordForProject.answers.push(newAnswer);
   Meteor.users.update(
     { _id: user._id },
     {
@@ -27,26 +31,25 @@ function updateUserAnswer(user, project, step, answer) {
 export default function checkAnswer({ token, project, step, answer }) {
   try {
     const user = Meteor.users.findOne({ token });
-    if (!user) throw new Error('We could not find a user with that token.');
+    const projectDoc = Projects.findOne({ slug: project });
 
-    const projectDoc = Projects.findOne({ _id: project });
+    if (!user) throw new Error('We could not find a user with that token.');
     if (!projectDoc) {
       throw new Error(
         'We could not find the project. Did you provide the correct project id?',
       );
     }
 
-    const correct =
-      answer == projectDoc.steps.find(s => s.order == step).answer;
+    console.log({ answer });
 
-    if (correct) updateUserAnswer(user, project, step, answer);
+    if (answer) updateUserAnswer(user, projectDoc, step, answer);
 
     return {
       success: true,
       project: projectDoc.title,
       step,
       user: user.emails[0].address,
-      correct,
+      answer,
     };
   } catch (e) {
     return {

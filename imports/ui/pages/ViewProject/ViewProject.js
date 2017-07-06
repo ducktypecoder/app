@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonToolbar, ButtonGroup, Button } from 'react-bootstrap';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
 import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
@@ -12,48 +10,64 @@ import Loading from '../../components/Loading/Loading';
 function nextUnansweredStep(project) {
   if (!project) return {};
 
+  console.log({ project });
   // get all the project steps, in order, and check on the user
   const orderedSteps = project.steps.sort(s => s.order).reverse();
   const user = Meteor.user();
 
+  // return the first step if user is not logged in
+  // or hasnt started ay projects yet
   if (!user) return orderedSteps[0];
   if (!user.projects) return orderedSteps[0];
 
+  console.log({ orderedSteps });
+
   // get the answers that the user has submitted for this project
   const userProjectRecord = user.projects.filter(p => p._id == project._id)[0];
+
   console.log({ userProjectRecord });
+
+  // return the first step if user has not yet started this specific project
   if (!userProjectRecord) return orderedSteps[0];
+
+  // in the user's answers, get the highest ordered step that has been answered
   const userAnswers = userProjectRecord.answers;
   console.log({ userAnswers });
 
-  // in the user's answers, get the highest ordered step that has been answered
-  const step = userAnswers.sort(s => s.order)[0];
-  console.log({ step });
+  const usersMostRecentStep = userAnswers.sort(s => s.order)[0];
+  console.log({ usersMostRecentStep });
+
   // return the step that comes next (step order is 1 based,
   // but orderedSteps array indices are 0 based)
-  console.log(orderedSteps[Number(step.order)]);
-  return orderedSteps[Number(step.order)];
+  const nextStepOrder = Number(usersMostRecentStep.order) + 1;
+  console.log({ nextStepOrder });
+  const nextStep = orderedSteps.find(s => s.order == nextStepOrder);
+  console.log({ nextStep });
+
+  return nextStep;
 }
 
 function answeredSteps(nextUnansweredStep, project) {
   // return all the steps the came before the nextUnansweredStep;
   const orderedSteps = project.steps.sort(s => s.order).reverse();
+
   return orderedSteps.filter(s => s.order < nextUnansweredStep.order);
 }
 
+// prettier-ignore
 const renderSteps = (doc) => {
-  const step = nextUnansweredStep(doc);
-
+  const nextStep = nextUnansweredStep(doc);
+  console.log({ nextStep });
   return (
     <div>
       <ul>
-        {answeredSteps(step, doc).map(s =>
+        {answeredSteps(nextStep, doc).map(s =>
           (<li key={s.order}>
             {s.content}
           </li>),
         )}
         <li>
-          {step.content}
+          {nextStep.content}
         </li>
       </ul>
     </div>

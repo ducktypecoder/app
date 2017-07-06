@@ -9,6 +9,7 @@ export default function setupApi() {
   const app = express();
 
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
 
   app.get('/api/', (req, res) => {
     res.status(200).json({ message: 'Hello World!!!' });
@@ -19,6 +20,8 @@ export default function setupApi() {
   // and respond 'correct: true'
   // if it is incorrect, then respond 'correct: false'
   app.post('/api/answers', async (req, res) => {
+    console.log('POST /api/answers');
+    console.log('req/body: ', req.body);
     const data = {
       token: req.body.token,
       project: req.body.project,
@@ -26,16 +29,21 @@ export default function setupApi() {
       answer: req.body.answer,
     };
 
+    console.log({ data });
+
     const checkAnswerResult = checkAnswer(data);
 
     return res.status(200).json({ ...checkAnswerResult });
   });
 
   app.get('/api/current-step', (req, res) => {
+    console.log('GET /api/current-step');
     const data = {
       token: req.query.token, // TODO: send and recieve token in the req headers
       projectSlug: req.query.project,
     };
+
+    console.log('request data: ', data);
 
     try {
       const currentStep = getCurrentStep(data);

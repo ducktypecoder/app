@@ -20,6 +20,27 @@ const documentsSeed = userId => ({
 
 seeder(Projects, {
   environments: ['development', 'staging'],
+  modelCount: 1,
+  model(index, faker) {
+    console.log('seeding hello-world project........');
+    return {
+      author: 'Mark Hurwitz',
+      title: 'Hello World',
+      slug: 'hello-world',
+      description: 'This is the very first ducktypecoder project',
+      steps: [
+        { order: 1, content: 'This is step 1', answer: 'foobar1' },
+        { order: 2, content: 'This is step 2', answer: 'foobar2' },
+        { order: 3, content: 'This is step 3', answer: 'foobar3' },
+        { order: 4, content: 'This is step 4', answer: 'foobar4' },
+        { order: 5, content: 'This is step 5', answer: 'foobar5' },
+      ],
+    };
+  },
+});
+
+seeder(Projects, {
+  environments: ['development', 'staging'],
   modelCount: 3,
   model(index, faker) {
     console.log('seeding Projects........');

@@ -27,6 +27,7 @@ seeder(Projects, {
     return {
       author: 'foobar jones',
       title: `Project #${projectCount + 1}`,
+      slug: `project-#${projectCount + 1}`,
       description: `This is the description of project #${projectCount + 1}`,
       steps: [
         { order: 1, content: 'This is step 1', answer: 'foobar1' },

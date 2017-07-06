@@ -3,6 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import checkAnswer from '../../api/Projects/server/check-answer';
+import getCurrentStep from '../../api/Projects/server/get-current-step';
 
 export default function setupApi() {
   const app = express();
@@ -18,8 +19,6 @@ export default function setupApi() {
   // and respond 'correct: true'
   // if it is incorrect, then respond 'correct: false'
   app.post('/api/answers', async (req, res) => {
-    console.log('req.body: ', req.body);
-
     const data = {
       token: req.body.token,
       project: req.body.project,
@@ -30,6 +29,20 @@ export default function setupApi() {
     const checkAnswerResult = checkAnswer(data);
 
     return res.status(200).json({ ...checkAnswerResult });
+  });
+
+  app.get('/api/current-step', (req, res) => {
+    const data = {
+      token: req.query.token, // TODO: send and recieve token in the req headers
+      projectSlug: req.query.project,
+    };
+
+    try {
+      const currentStep = getCurrentStep(data);
+      return res.status(200).json(currentStep);
+    } catch (e) {
+      return res.status(400).json({ error: e.message, success: false });
+    }
   });
 
   WebApp.connectHandlers.use(app); // eslint-disable-line

@@ -25,7 +25,6 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
-    if (!loading && !user.token) Meteor.call('users.resetToken');
     const component = this;
 
     validate(component.form, {

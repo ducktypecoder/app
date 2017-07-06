@@ -41,6 +41,10 @@ Projects.schema = new SimpleSchema({
     type: String,
     label: 'The title of the project.',
   },
+  slug: {
+    type: String,
+    label: "The project's slug",
+  },
   description: {
     type: String,
     label: 'The description of the project.',

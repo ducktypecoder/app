@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 import Documents from '../../api/Documents/Documents';
 import Projects from '../../api/Projects/Projects';
+import helloWorldProjectData from './hello-world-project-data';
 
 const documentsSeed = userId => ({
   collection: Documents,
@@ -23,21 +24,7 @@ seeder(Projects, {
   modelCount: 1,
   model(index, faker) {
     console.log('seeding hello-world project........');
-    return {
-      author: 'Mark Hurwitz',
-      title: 'Hello World',
-      slug: 'hello-world',
-      description: 'This is the very first ducktypecoder project',
-      finalMessage:
-        'Congratulations! You passed all the steps and now you are finished!',
-      steps: [
-        { order: 1, content: 'This is step 1', answer: 'foobar1' },
-        { order: 2, content: 'This is step 2', answer: 'foobar2' },
-        { order: 3, content: 'This is step 3', answer: 'foobar3' },
-        { order: 4, content: 'This is step 4', answer: 'foobar4' },
-        { order: 5, content: 'This is step 5', answer: 'foobar5' },
-      ],
-    };
+    return helloWorldProjectData;
   },
 });
 

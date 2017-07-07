@@ -70,6 +70,7 @@ Projects.schema = new SimpleSchema({
   'steps.$.answer': {
     type: String,
     label: 'The correct answer to solve this step',
+    optional: true,
   },
 });
 

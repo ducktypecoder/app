@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
+import parseMarkdown from '../../../modules/parse-markdown';
 
 // TODO: refactor this into a reusable module
 function nextUnansweredStep(project) {
@@ -56,6 +57,14 @@ function answeredSteps(nextUnansweredStep, project) {
 }
 
 // prettier-ignore
+function renderStepContent(content) {
+  return (<div>
+    <hr />
+    <div dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
+  </div>);
+}
+
+// prettier-ignore
 const renderSteps = (doc) => {
   const nextStep = nextUnansweredStep(doc);
   console.log({ nextStep });
@@ -64,11 +73,11 @@ const renderSteps = (doc) => {
       <ul>
         {answeredSteps(nextStep, doc).map(s =>
           (<li key={s.order}>
-            {s.content}
+            {renderStepContent(s.content)}
           </li>),
         )}
         <li>
-          {nextStep.content}
+          {renderStepContent(nextStep.content)}
         </li>
       </ul>
     </div>

@@ -33,7 +33,7 @@ module.exports = function getCurrentStep(data) {
   const nextStepOrder = Number(usersMostRecentStep.order) + 1;
   const currentStep = orderedSteps.find(s => s.order == nextStepOrder);
 
-  return currentStep;
+  return currentStep || { finished: true };
 };
 
 // function getUserRecordForProject(user, projectDoc) {

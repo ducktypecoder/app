@@ -28,6 +28,8 @@ seeder(Projects, {
       title: 'Hello World',
       slug: 'hello-world',
       description: 'This is the very first ducktypecoder project',
+      finalMessage:
+        'Congratulations! You passed all the steps and now you are finished!',
       steps: [
         { order: 1, content: 'This is step 1', answer: 'foobar1' },
         { order: 2, content: 'This is step 2', answer: 'foobar2' },
@@ -50,6 +52,8 @@ seeder(Projects, {
       title: `Project #${projectCount + 1}`,
       slug: `project-#${projectCount + 1}`,
       description: `This is the description of project #${projectCount + 1}`,
+      finalMessage:
+        'Congratulations! You passed all the steps and now you are finished!',
       steps: [
         { order: 1, content: 'This is step 1', answer: 'foobar1' },
         { order: 2, content: 'This is step 2', answer: 'foobar2' },

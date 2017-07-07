@@ -49,6 +49,10 @@ Projects.schema = new SimpleSchema({
     type: String,
     label: 'The description of the project.',
   },
+  finalMessage: {
+    type: String,
+    label: 'Message displayed after all passing all the steps',
+  },
   steps: {
     type: Array,
   },

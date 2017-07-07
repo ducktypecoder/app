@@ -44,6 +44,7 @@ function nextUnansweredStep(project) {
   const nextStep = orderedSteps.find(s => s.order == nextStepOrder);
   console.log({ nextStep });
 
+  if (!nextStep) return { content: project.finalMessage, order: Infinity };
   return nextStep;
 }
 

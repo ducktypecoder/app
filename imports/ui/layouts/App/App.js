@@ -12,6 +12,7 @@ import Index from '../../pages/Index/Index';
 
 import Projects from '../../pages/Projects/Projects';
 import ViewProject from '../../pages/ViewProject/ViewProject';
+import NewProject from '../../pages/NewProject/NewProject';
 
 import Documents from '../../pages/Documents/Documents';
 import NewDocument from '../../pages/NewDocument/NewDocument';
@@ -40,6 +41,7 @@ const App = props => (
         <Switch>
           <Route exact name="index" path="/" component={Index} />
           <Route exact path="/projects" component={Projects} {...props} />
+          <Authenticated exact path="/projects/new" component={NewProject} {...props} />
           <Route exact path="/projects/:_id" component={ViewProject} {...props} />
           <Authenticated exact path="/documents" component={Documents} {...props} />
           <Authenticated exact path="/documents/new" component={NewDocument} {...props} />

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Table, Alert, Button } from 'react-bootstrap';
 import { timeago, monthDayYearAtTime } from '@cleverbeagle/dates';
 import { Meteor } from 'meteor/meteor';
@@ -9,13 +10,21 @@ import Loading from '../../components/Loading/Loading';
 
 import './Projects.scss';
 
-function Projects({ loading, projects, match, history }) {
+function Projects({ user, loading, projects, match, history }) {
   if (loading) return <Loading />;
 
   return (
     <div className="Projects">
       <div className="page-header clearfix">
         <h4 className="pull-left">Projects</h4>
+        {user
+          ? <Link
+            className="btn btn-success pull-right"
+            to={`${match.url}/new`}
+          >
+              Add Project
+            </Link>
+          : <div />}
       </div>
       {projects.length
         ? <Table responsive>
@@ -31,9 +40,15 @@ function Projects({ loading, projects, match, history }) {
           <tbody>
             {projects.map(({ _id, title, createdAt, updatedAt }) =>
                 (<tr key={_id}>
-                  <td>{title}</td>
-                  <td>{timeago(updatedAt)}</td>
-                  <td>{monthDayYearAtTime(createdAt)}</td>
+                  <td>
+                    {title}
+                  </td>
+                  <td>
+                    {timeago(updatedAt)}
+                  </td>
+                  <td>
+                    {monthDayYearAtTime(createdAt)}
+                  </td>
                   <td>
                     <Button
                       bsStyle="primary"
@@ -54,6 +69,7 @@ function Projects({ loading, projects, match, history }) {
 }
 
 Projects.propTypes = {
+  user: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   projects: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.object.isRequired,
@@ -62,7 +78,9 @@ Projects.propTypes = {
 
 export default createContainer(() => {
   const subscription = Meteor.subscribe('projects');
+  const user = Meteor.user();
   return {
+    user,
     loading: !subscription.ready(),
     projects: ProjectsCollection.find().fetch(),
   };

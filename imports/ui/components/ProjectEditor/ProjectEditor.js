@@ -9,6 +9,24 @@ import validate from '../../../modules/validate';
 import ProjectStepsEditor from './ProjectStepsEditor';
 
 class ProjectEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const steps = (props.doc && props.doc.steps) || [];
+    const stepsPresent = steps.length > 0;
+    const sortedSteps = stepsPresent && steps.sort(s => s.order);
+    const sortedAndMappedSteps = sortedSteps && sortedSteps.map(s => s.content);
+
+    this.state = {
+      steps: stepsPresent ? sortedAndMappedSteps : [],
+    };
+
+    this.addStep = this.addStep.bind(this);
+    this.removeStep = this.removeStep.bind(this);
+    this.updateStep = this.updateStep.bind(this);
+    this.toggleEditingStep = this.toggleEditingStep.bind(this);
+  }
+
   componentDidMount() {
     const component = this;
     validate(component.form, {
@@ -41,6 +59,49 @@ class ProjectEditor extends React.Component {
         component.handleSubmit();
       },
     });
+  }
+
+  toggleEditingStep(index) {
+    const toggledSteps = this.state.steps.map(s => ({
+      content: s.content,
+      editing: false,
+    }));
+    toggledSteps.splice(
+      index,
+      1,
+      Object.assign(toggledSteps[index], { editing: true }),
+    );
+    this.setState({ steps: [...toggledSteps] });
+  }
+
+  addStep() {
+    const toggledSteps = this.state.steps.map(s => ({
+      content: s.content,
+      editing: false,
+    }));
+    const newStep = { content: '', editing: true };
+
+    this.setState({ steps: [...toggledSteps, newStep] });
+  }
+
+  removeStep(index) {
+    // if (!window.confirm('Are you sure you want to delete this step?')) return;
+
+    const steps = this.state.steps;
+    console.log({ index });
+    console.log({ stepsBeforeSplice: steps.map(s => s.content).join(', ') });
+    steps.splice(index, 1);
+    console.log({ stepsAfterSplice: steps.map(s => s.content).join(', ') });
+    this.setState({ steps });
+    console.log({
+      stepsInState: this.state.steps.map(s => s.content).join(', '),
+    });
+  }
+
+  updateStep(index, content) {
+    const { steps } = this.state;
+    steps.splice(index, 1, { content });
+    this.setState({ steps });
   }
 
   handleSubmit() {
@@ -111,7 +172,14 @@ class ProjectEditor extends React.Component {
             placeholder="Tell what the user will learn as they work through this project..."
           />
         </FormGroup>
-        <ProjectStepsEditor project={doc} />
+        <ProjectStepsEditor
+          steps={this.state.steps}
+          addStep={this.addStep}
+          removeStep={this.removeStep}
+          updateStep={this.updateStep}
+          toggleEditingStep={this.toggleEditingStep}
+          project={doc}
+        />
         <FormGroup>
           <ControlLabel>Final message</ControlLabel>
           <textarea

@@ -56,6 +56,7 @@ export default class ProjectStepInput extends React.Component {
             toolbarStyle={toolbarStyle}
           />
 
+          <Button onClick={this.handleToggle}>Done</Button>
           <Button onClick={this.handleRemove}>Remove step</Button>
         </div>
       );

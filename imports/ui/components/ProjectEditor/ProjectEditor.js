@@ -62,6 +62,7 @@ class ProjectEditor extends React.Component {
   }
 
   toggleEditingStep(index) {
+    const stepToToggle = this.state.steps[index];
     const toggledSteps = this.state.steps.map(s => ({
       content: s.content,
       editing: false,
@@ -69,7 +70,9 @@ class ProjectEditor extends React.Component {
     toggledSteps.splice(
       index,
       1,
-      Object.assign(toggledSteps[index], { editing: true }),
+      Object.assign(stepToToggle, {
+        editing: !stepToToggle.editing,
+      }),
     );
     this.setState({ steps: [...toggledSteps] });
   }

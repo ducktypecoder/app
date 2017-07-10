@@ -5,17 +5,13 @@ import { Button } from 'react-bootstrap';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-const wrapperStyle = {
-  color: 'blue',
-};
+const wrapperStyle = {};
 
 const editorStyle = {
-  border: '1px solid red',
+  border: '1px solid grey',
 };
 
-const toolbarStyle = {
-  color: 'green',
-};
+const toolbarStyle = {};
 
 export default class ProjectStepInput extends React.Component {
   constructor(props) {
@@ -44,10 +40,9 @@ export default class ProjectStepInput extends React.Component {
 
   render() {
     const { toggleEditing, step, editing, index } = this.props;
-    console.log('render step: editing: ', editing, index);
     const { editorState } = this.state;
 
-    if (editing) {
+    if (editing || typeof editing === 'undefined') {
       return (
         <div data-test={`step-${index + 1}`}>
           <Editor
@@ -68,6 +63,7 @@ export default class ProjectStepInput extends React.Component {
 
     return (
       <div
+        className="well"
         onClick={this.handleToggle}
         data-test={`step-${this.props.index + 1}`}
       >

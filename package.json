@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "commonmark": "^0.27.0",
+    "draft-convert": "^1.4.7",
     "draft-js": "^0.10.1",
     "draftjs-utils": "^0.8.3",
     "express": "^4.15.3",
@@ -50,7 +51,10 @@
         "jsx": true
       }
     },
-    "plugins": ["meteor", "react"],
+    "plugins": [
+      "meteor",
+      "react"
+    ],
     "extends": [
       "airbnb",
       "plugin:meteor/recommended",
@@ -88,6 +92,8 @@
       "^meteor/(.*)": "<rootDir>/meteorMocks.js",
       "\\.(css)$": "<rootDir>/node_modules/jest-css-modules"
     },
-    "snapshotSerializer": ["jest-serializer-enzyme"]
+    "snapshotSerializer": [
+      "jest-serializer-enzyme"
+    ]
   }
 }

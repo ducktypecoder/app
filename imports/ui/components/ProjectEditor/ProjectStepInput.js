@@ -24,14 +24,14 @@ export default class ProjectStepInput extends React.Component {
     this.handleToggle = this.handleToggle.bind(this);
   }
   onEditorStateChange(editorState) {
-    const { index, updateStep } = this.props;
+    const { step, updateStep } = this.props;
 
     this.setState({ editorState });
-    updateStep(index, editorState.getCurrentContent().getPlainText());
+    updateStep(step.id, editorState.getCurrentContent().getPlainText());
   }
 
   handleRemove() {
-    this.props.removeStep(this.props.index);
+    this.props.removeStep(this.props.step.id);
   }
 
   handleToggle() {
@@ -49,7 +49,7 @@ export default class ProjectStepInput extends React.Component {
             editorState={editorState}
             onEditorStateChange={this.onEditorStateChange}
             wrapperClassName="wrapper-class"
-            editorClassName="editor-class"
+            editorClassName={`editor-class${index}`}
             toolbarClassName="toolbar-class"
             wrapperStyle={wrapperStyle}
             editorStyle={editorStyle}
@@ -74,4 +74,4 @@ export default class ProjectStepInput extends React.Component {
   }
 }
 //
-//
+// //

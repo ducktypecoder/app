@@ -22,6 +22,7 @@ Projects.schema = new SimpleSchema({
   author: {
     type: String,
     label: "The author's name.",
+    optional: true,
   },
   createdAt: {
     type: String,
@@ -48,13 +49,16 @@ Projects.schema = new SimpleSchema({
   description: {
     type: String,
     label: 'The description of the project.',
+    optional: true,
   },
   finalMessage: {
     type: String,
     label: 'Message displayed after all passing all the steps',
+    optional: true,
   },
   steps: {
     type: Array,
+    optional: true,
   },
   'steps.$': {
     type: Object,

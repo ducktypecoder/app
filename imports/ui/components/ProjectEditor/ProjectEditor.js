@@ -65,6 +65,7 @@ class ProjectEditor extends React.Component {
     const stepToToggle = this.state.steps[index];
     const toggledSteps = this.state.steps.map(s => ({
       content: s.content,
+      id: s.id,
       editing: false,
     }));
     toggledSteps.splice(
@@ -80,30 +81,30 @@ class ProjectEditor extends React.Component {
   addStep() {
     const toggledSteps = this.state.steps.map(s => ({
       content: s.content,
+      id: s.id,
       editing: false,
     }));
-    const newStep = { content: '', editing: true };
+    const newStep = { content: '', editing: true, id: Math.random() * 99999 };
 
     this.setState({ steps: [...toggledSteps, newStep] });
   }
 
-  removeStep(index) {
-    // if (!window.confirm('Are you sure you want to delete this step?')) return;
-
-    const steps = this.state.steps;
-    console.log({ index });
-    console.log({ stepsBeforeSplice: steps.map(s => s.content).join(', ') });
-    steps.splice(index, 1);
-    console.log({ stepsAfterSplice: steps.map(s => s.content).join(', ') });
+  removeStep(id) {
+    if (!window.confirm('Are you sure you want to delete this step?')) return;
+    const steps = [...this.state.steps];
+    const stepIndex = steps.findIndex(s => s.id === id);
+    console.log({ stepIndex });
+    steps.splice(stepIndex, 1);
     this.setState({ steps });
-    console.log({
-      stepsInState: this.state.steps.map(s => s.content).join(', '),
-    });
   }
 
-  updateStep(index, content) {
+  updateStep(id, content) {
     const { steps } = this.state;
-    steps.splice(index, 1, { content });
+    const stepToUpdate = steps.find(s => s.id === id);
+    const stepToUpdateIndex = steps.findIndex(s => s.id === id);
+    console.log({ stepToUpdateIndex });
+    stepToUpdate.content = content;
+    steps.splice(stepToUpdateIndex, 1, stepToUpdate);
     this.setState({ steps });
   }
 

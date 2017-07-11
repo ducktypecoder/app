@@ -4,6 +4,13 @@ import Projects from './Projects';
 import helloWorldProjectData from '../../startup/server/hello-world-project-data';
 
 Meteor.methods({
+  'projects.create': function createProject(title) {
+    check(title, String);
+
+    const slug = title.toLowerCase().replace(' ', '-');
+
+    return Projects.insert({ title, slug });
+  },
   'projects.seed': function seedProject(opts) {
     // To overwrite the default 'hello-world' project:
     // Meteor.call('projects.seed', { force: true })

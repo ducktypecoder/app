@@ -134,6 +134,6 @@ export default createContainer(({ match }) => {
 
   return {
     loading: !subscription.ready(),
-    doc: Projects.findOne(projectId),
+    doc: Projects.findOne(projectId) || {},
   };
 }, EditProject);

@@ -37,10 +37,14 @@ class ProjectStepEditor extends React.Component {
     this.handleRemove = this.handleRemove.bind(this);
   }
 
+  // receive changes from parent
   componentWillReceiveProps(nextProps) {
+    // if we are getting the same step, do not mess with editor state
+    if (nextProps.index === this.props.index) return;
+
+    // when we get a new step, update the editor state with the new step's content
     // https://github.com/facebook/draft-js/issues/284
     const { content } = nextProps;
-
     const blocksFromHTML = convertFromHTML(content);
     const contentState = ContentState.createFromBlockArray(blocksFromHTML);
     const editorState = EditorState.createWithContent(contentState);
@@ -49,9 +53,12 @@ class ProjectStepEditor extends React.Component {
 
   onEditorStateChange(editorState) {
     const { step, updateStep, index } = this.props;
+    const content = convertToHTML(editorState.getCurrentContent());
 
     this.setState({ editorState });
-    updateStep(index, editorState.getCurrentContent().getPlainText());
+
+    // send changes up to parent state
+    updateStep(index, content);
   }
 
   handleRemove() {

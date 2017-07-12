@@ -42,11 +42,31 @@ seeder(Projects, {
       finalMessage:
         'Congratulations! You passed all the steps and now you are finished!',
       steps: [
-        { order: 1, content: 'This is step 1', answer: 'foobar1' },
-        { order: 2, content: 'This is step 2', answer: 'foobar2' },
-        { order: 3, content: 'This is step 3', answer: 'foobar3' },
-        { order: 4, content: 'This is step 4', answer: 'foobar4' },
-        { order: 5, content: 'This is step 5', answer: 'foobar5' },
+        {
+          order: 1,
+          content: '<p>This is step 1</p>',
+          tests: "it('works', () => expect(1).toEqual(1))",
+        },
+        {
+          order: 2,
+          content: '<p>This is step 2</p>',
+          tests: "it('works', () => expect(1).toEqual(1))",
+        },
+        {
+          order: 3,
+          content: '<p>This is step 3</p>',
+          tests: "it('works', () => expect(1).toEqual(1))",
+        },
+        {
+          order: 4,
+          content: '<p>This is step 4</p>',
+          tests: "it('works', () => expect(1).toEqual(1))",
+        },
+        {
+          order: 5,
+          content: '<p>This is step 5</p>',
+          tests: "it('works', () => expect(1).toEqual(1))",
+        },
       ],
     };
   },

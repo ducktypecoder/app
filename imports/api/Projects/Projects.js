@@ -71,9 +71,9 @@ Projects.schema = new SimpleSchema({
     type: String,
     label: 'Content for this step',
   },
-  'steps.$.answer': {
+  'steps.$.tests': {
     type: String,
-    label: 'The correct answer to solve this step',
+    label: 'The stringified test suite for this step',
     optional: true,
   },
 });

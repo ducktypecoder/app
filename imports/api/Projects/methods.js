@@ -11,6 +11,25 @@ Meteor.methods({
 
     return Projects.insert({ title, slug });
   },
+  'projects.update': function updateProject(doc) {
+    check(doc, {
+      _id: String,
+      title: String,
+      author: Match.Maybe(String),
+      description: Match.Maybe(String),
+      finalMessage: Match.Maybe(String),
+      steps: Match.Maybe([Object]),
+    });
+
+    try {
+      const projectId = doc._id;
+      const result = Projects.update(projectId, { $set: doc });
+      const updatedProject = Projects.findOne(projectId);
+      return projectId; // Return _id so we can redirect to document after update.
+    } catch (exception) {
+      throw new Meteor.Error('500', exception);
+    }
+  },
   'projects.seed': function seedProject(opts) {
     // To overwrite the default 'hello-world' project:
     // Meteor.call('projects.seed', { force: true })
@@ -22,10 +41,7 @@ Meteor.methods({
     });
 
     const slug = opts.slug || 'hello-world';
-    console.log('slug: ', slug);
-
     const projectDoc = Projects.findOne({ slug });
-    console.log({ projectDoc });
 
     if (projectDoc && !opts.force) {
       console.log('project already exists. will not overwrite.');
@@ -37,7 +53,6 @@ Meteor.methods({
     if (slug == 'hello-world') data = helloWorldProjectData;
 
     const result = Projects.insert(data);
-    console.log({ result });
     return result;
   },
 });

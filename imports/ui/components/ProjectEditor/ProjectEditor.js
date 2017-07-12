@@ -10,6 +10,7 @@ import validate from '../../../modules/validate';
 class ProjectEditor extends React.Component {
   componentDidMount() {
     const component = this;
+    const { updateProject } = this.props;
     validate(component.form, {
       rules: {
         author: {
@@ -43,31 +44,12 @@ class ProjectEditor extends React.Component {
   }
 
   handleSubmit() {
-    const { history } = this.props;
-    const existingProject = this.props.doc && this.props.doc._id;
-    const methodToCall = existingProject
-      ? 'projects.update'
-      : 'projects.insert';
-    const doc = {
+    this.props.updateProject({
       title: this.title.value.trim(),
       author: this.author.value.trim(),
-      finalMesasage: this.finalMesasage.value.trim(),
+      finalMessage: this.finalMessage.value.trim(),
       description: this.description.value.trim(),
-    };
-
-    if (existingProject) doc._id = existingProject;
-
-    Meteor.call(methodToCall, doc, (error, projectId) => {
-      if (error) {
-        Bert.alert(error.reason, 'danger');
-      } else {
-        const confirmation = existingProject
-          ? 'Project updated!'
-          : 'Project added!';
-        this.form.reset();
-        Bert.alert(confirmation, 'success');
-        history.push(`/projects/${projectId}`);
-      }
+      _id: this.props.doc._id,
     });
   }
 
@@ -115,7 +97,7 @@ class ProjectEditor extends React.Component {
           <textarea
             className="form-control"
             name="description"
-            ref={message => (this.message = message)}
+            ref={finalMessage => (this.finalMessage = finalMessage)}
             defaultValue={doc && doc.message}
             placeholder="Some message congratulating the user for finishing the project..."
           />

@@ -13,20 +13,43 @@ class EditProject extends React.Component {
     super(props);
 
     this.state = {
-      steps: [],
+      steps: props.doc.steps || [],
       activeSidebarItem: 'general',
     };
 
+    this.sideNav = this.sideNav.bind(this);
+    this.updateProject = this.updateProject.bind(this);
     this.removeStep = this.removeStep.bind(this);
     this.updateStep = this.updateStep.bind(this);
     this.handleSectionSelect = this.handleSectionSelect.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { doc } = nextProps;
+
+    this.setState({ steps: [...doc.steps] });
+  }
+
+  updateProject(doc) {
+    const steps = this.state.steps.map((s, i) => ({
+      content: s.content,
+      order: i + 1,
+    }));
+    const projectData = Object.assign({}, doc, { steps });
+    Meteor.call('projects.update', projectData, (error, projectId) => {
+      if (error) {
+        Bert.alert(error.reason, 'danger');
+      } else {
+        const confirmation = 'Project updated!';
+        Bert.alert(confirmation, 'success');
+      }
+    });
   }
 
   removeStep(id) {
     if (!window.confirm('Are you sure you want to delete this step?')) return;
     const steps = [...this.state.steps];
     const stepIndex = steps.findIndex(s => s.id === id);
-    console.log({ stepIndex });
     steps.splice(stepIndex, 1);
     this.setState({ steps });
   }
@@ -40,6 +63,7 @@ class EditProject extends React.Component {
   }
 
   handleSectionSelect(key) {
+    console.log('EditProject > handleSectionSelect: this: ', this.setState);
     switch (key) {
       case 'addStep':
         const steps = [...this.state.steps];
@@ -59,6 +83,7 @@ class EditProject extends React.Component {
 
   sideNav() {
     const { steps, activeSidebarItem } = this.state;
+
     return (
       <Nav
         bsStyle="pills"
@@ -82,7 +107,13 @@ class EditProject extends React.Component {
     const { activeSidebarItem, steps } = this.state;
 
     if (activeSidebarItem === 'general') {
-      return <ProjectEditor doc={doc} history={history} />;
+      return (
+        <ProjectEditor
+          doc={doc}
+          history={history}
+          updateProject={this.updateProject}
+        />
+      );
     }
 
     const stepIndex = Number(activeSidebarItem.replace('step-', '')) - 1;
@@ -104,6 +135,7 @@ class EditProject extends React.Component {
 
   render() {
     const { doc, loading } = this.props;
+    const { steps, activeSidebarItem } = this.state;
 
     if (loading) return <div />;
     if (!doc) return <NotFound />;

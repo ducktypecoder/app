@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
-import parseMarkdown from '../../../modules/parse-markdown';
 
 // TODO: refactor this into a reusable module
 function nextUnansweredStep(project) {
   if (!project) return {};
 
-  console.log({ project });
   // get all the project steps, in order, and check on the user
-  const orderedSteps = project.steps.sort(s => s.order).reverse();
+  const orderedSteps =
+    (project.steps && project.steps.sort(s => s.order).reverse()) || [];
+
   const user = Meteor.user();
 
   // return the first step if user is not logged in
@@ -21,29 +22,21 @@ function nextUnansweredStep(project) {
   if (!user) return orderedSteps[0];
   if (!user.projects) return orderedSteps[0];
 
-  console.log({ orderedSteps });
-
   // get the answers that the user has submitted for this project
   const userProjectRecord = user.projects.filter(p => p._id == project._id)[0];
-
-  console.log({ userProjectRecord });
 
   // return the first step if user has not yet started this specific project
   if (!userProjectRecord) return orderedSteps[0];
 
   // in the user's answers, get the highest ordered step that has been answered
   const userAnswers = userProjectRecord.answers;
-  console.log({ userAnswers });
 
   const usersMostRecentStep = userAnswers.sort(s => s.order)[0];
-  console.log({ usersMostRecentStep });
 
   // return the step that comes next (step order is 1 based,
   // but orderedSteps array indices are 0 based)
   const nextStepOrder = Number(usersMostRecentStep.order) + 1;
-  console.log({ nextStepOrder });
   const nextStep = orderedSteps.find(s => s.order == nextStepOrder);
-  console.log({ nextStep });
 
   if (!nextStep) return { content: project.finalMessage, order: Infinity };
   return nextStep;
@@ -51,7 +44,8 @@ function nextUnansweredStep(project) {
 
 function answeredSteps(nextUnansweredStep, project) {
   // return all the steps the came before the nextUnansweredStep;
-  const orderedSteps = project.steps.sort(s => s.order).reverse();
+  const orderedSteps =
+    (project.steps && project.steps.sort(s => s.order).reverse()) || [];
 
   return orderedSteps.filter(s => s.order < nextUnansweredStep.order);
 }
@@ -60,12 +54,13 @@ function answeredSteps(nextUnansweredStep, project) {
 function renderStepContent(content) {
   return (<div>
     <hr />
-    <div dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
+    <div dangerouslySetInnerHTML={{ __html: content }} />
   </div>);
 }
 
 // prettier-ignore
-const renderSteps = (doc) => {
+function renderSteps(doc) {
+  if (!doc.steps || doc.steps.length == 0) return <div />;
   const nextStep = nextUnansweredStep(doc);
   console.log({ nextStep });
   return (
@@ -82,30 +77,39 @@ const renderSteps = (doc) => {
       </ul>
     </div>
   );
-};
+}
 
-const ViewProject = ({ loading, doc }) => {
+function ViewProject({ loading, doc, user, match }) {
   if (loading) return <Loading />;
   if (!doc) return <NotFound />;
 
+  console.log({ user });
   return (
     <div className="ViewProject">
       <div className="page-header clearfix">
         <h4 className="pull-left">
           {doc && doc.title}
         </h4>
+        {user
+          ? <Link
+            className="btn btn-success pull-right"
+            to={`${match.url}/edit`}
+          >
+              Edit Project
+            </Link>
+          : <div />}
       </div>
       {doc.description}
       {renderSteps(doc)}
     </div>
   );
-};
+}
 
 ViewProject.propTypes = {
   loading: PropTypes.bool.isRequired,
   doc: PropTypes.object.isRequired,
+  user: PropTypes.object,
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
 export default createContainer(({ match }) => {
@@ -117,5 +121,7 @@ export default createContainer(({ match }) => {
     loading: !subscription.ready(),
     loadingAnswers: !answersSubscription.ready(),
     doc: Projects.findOne(projectId) || {},
+    user: Meteor.user(),
+    match,
   };
 }, ViewProject);

@@ -48,6 +48,8 @@ Meteor.methods({
       return;
     }
 
+    if (projectDoc) Projects.remove({ slug: projectDoc.slug });
+
     // data defaults to 'hello-world' project
     let data;
     if (slug == 'hello-world') data = helloWorldProjectData;

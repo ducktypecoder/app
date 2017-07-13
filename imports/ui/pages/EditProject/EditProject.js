@@ -33,6 +33,7 @@ class EditProject extends React.Component {
   updateProject(doc) {
     const steps = this.state.steps.map((s, i) => ({
       content: s.content,
+      tests: s.tests,
       order: i + 1,
     }));
     const projectData = Object.assign({}, doc, { steps });
@@ -54,20 +55,23 @@ class EditProject extends React.Component {
     this.setState({ steps });
   }
 
-  updateStep(index, content) {
+  updateStep(index, content, tests) {
     const { steps } = this.state;
     const stepToUpdate = steps[index];
-    stepToUpdate.content = content;
+
+    if (content) stepToUpdate.content = content;
+    if (tests) stepToUpdate.tests = tests;
+
     steps.splice(index, 1, stepToUpdate);
+
     this.setState({ steps });
   }
 
   handleSectionSelect(key) {
-    console.log('EditProject > handleSectionSelect: this: ', this.setState);
     switch (key) {
       case 'addStep':
         const steps = [...this.state.steps];
-        steps.push({ content: '' });
+        steps.push({ content: '', tests: '' });
         this.setState({
           steps,
           activeSidebarItem: `step-${steps.length}`,
@@ -78,6 +82,7 @@ class EditProject extends React.Component {
         return;
       default:
         this.setState({ activeSidebarItem: key });
+        this.forceUpdate();
     }
   }
 
@@ -123,6 +128,7 @@ class EditProject extends React.Component {
       <ProjectStepEditor
         step={step}
         content={step.content}
+        tests={step.tests}
         index={stepIndex}
         addStep={this.addStep}
         removeStep={this.removeStep}

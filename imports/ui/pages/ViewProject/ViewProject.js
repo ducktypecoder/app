@@ -61,8 +61,9 @@ function renderStepContent(content) {
 // prettier-ignore
 function renderSteps(doc) {
   if (!doc.steps || doc.steps.length == 0) return <div />;
+
   const nextStep = nextUnansweredStep(doc);
-  console.log({ nextStep });
+
   return (
     <div>
       <ul>
@@ -83,7 +84,6 @@ function ViewProject({ loading, doc, user, match }) {
   if (loading) return <Loading />;
   if (!doc) return <NotFound />;
 
-  console.log({ user });
   return (
     <div className="ViewProject">
       <div className="page-header clearfix">

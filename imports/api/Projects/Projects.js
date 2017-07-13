@@ -19,11 +19,6 @@ Projects.deny({
 });
 
 Projects.schema = new SimpleSchema({
-  author: {
-    type: String,
-    label: "The author's name.",
-    optional: true,
-  },
   createdAt: {
     type: String,
     label: 'The date this project was created.',
@@ -74,6 +69,58 @@ Projects.schema = new SimpleSchema({
   'steps.$.tests': {
     type: String,
     label: 'The stringified test suite for this step',
+    optional: true,
+  },
+  author: {
+    type: Object,
+    optional: true,
+  },
+  'author.name': {
+    type: String,
+    optional: true,
+  },
+  'author.email': {
+    type: String,
+    optional: true,
+  },
+  'author.website': {
+    type: String,
+    optional: true,
+  },
+  'author.bio': {
+    type: String,
+    optional: true,
+  },
+  'author.companyName': {
+    type: String,
+    optional: true,
+  },
+  'author.companyWebsite': {
+    type: String,
+    optional: true,
+  },
+  'author.githubUrl': {
+    type: String,
+    optional: true,
+  },
+  'author.twitter': {
+    type: String,
+    optional: true,
+  },
+  'author.facebook': {
+    type: String,
+    optional: true,
+  },
+  'author.stackOverflow': {
+    type: String,
+    optional: true,
+  },
+  'author.linkedIn': {
+    type: String,
+    optional: true,
+  },
+  'author.other': {
+    type: String,
     optional: true,
   },
 });

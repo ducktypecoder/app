@@ -35,7 +35,20 @@ seeder(Projects, {
     console.log('seeding Projects........');
     const projectCount = index + 1;
     return {
-      author: 'foobar jones',
+      author: {
+        name: 'Mark Hurwitz',
+        email: 'mark@ducktypecoder.com',
+        website: 'www.ducktypecoder',
+        bio: 'Lorem ipsum developer dog cat puppy kitten',
+        companyName: 'Launch Brick Labs',
+        companyWebsite: 'www.launchbricklabs.com',
+        githubUrl: 'https://github.com/ducktypecoder',
+        twitter: 'ducktypecoder',
+        facebook: '',
+        stackOverflow: '',
+        linkedIn: '',
+        other: 'https://www.mhurwi.com',
+      },
       title: `Project #${projectCount + 1}`,
       slug: `project-#${projectCount + 1}`,
       description: `This is the description of project #${projectCount + 1}`,

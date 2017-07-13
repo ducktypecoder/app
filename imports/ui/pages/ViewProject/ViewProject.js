@@ -6,6 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
+import ViewProjectAuthor from './ViewProjectAuthor';
 
 // TODO: refactor this into a reusable module
 function nextUnansweredStep(project) {
@@ -100,6 +101,7 @@ function ViewProject({ loading, doc, user, match }) {
           : <div />}
       </div>
       {doc.description}
+      <ViewProjectAuthor author={doc.author} />
       {renderSteps(doc)}
     </div>
   );

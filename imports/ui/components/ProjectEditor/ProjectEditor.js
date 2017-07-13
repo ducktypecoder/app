@@ -6,11 +6,23 @@ import { FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
+import ProjectFinalMessageEditor from './ProjectFinalMessageEditor';
 
 class ProjectEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      finalMessage:
+        props.doc.finalMessage ||
+        'A congratulatory message for the user on completing this tutorial...',
+    };
+
+    this.updateFinalMessage = this.updateFinalMessage.bind(this);
+  }
+
   componentDidMount() {
     const component = this;
-    const { updateProject } = this.props;
     validate(component.form, {
       rules: {
         author: {
@@ -20,9 +32,6 @@ class ProjectEditor extends React.Component {
           required: true,
         },
         description: {
-          required: false,
-        },
-        finalMessage: {
           required: false,
         },
       },
@@ -43,11 +52,15 @@ class ProjectEditor extends React.Component {
     });
   }
 
+  updateFinalMessage(finalMessage) {
+    this.setState({ finalMessage });
+  }
+
   handleSubmit() {
     this.props.updateProject({
       title: this.title.value.trim(),
       author: this.author.value.trim(),
-      finalMessage: this.finalMessage.value.trim(),
+      finalMessage: this.state.finalMessage,
       description: this.description.value.trim(),
       _id: this.props.doc._id,
     });
@@ -69,6 +82,17 @@ class ProjectEditor extends React.Component {
             ref={title => (this.title = title)}
             defaultValue={doc && doc.title}
             placeholder="Oh, The Places You'll Go!"
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Slug</ControlLabel>
+          <input
+            disabled
+            type="text"
+            className="form-control"
+            name="slug"
+            ref={slug => (this.slug = slug)}
+            defaultValue={doc && doc.slug}
           />
         </FormGroup>
         <FormGroup>
@@ -94,12 +118,9 @@ class ProjectEditor extends React.Component {
         </FormGroup>
         <FormGroup>
           <ControlLabel>Final message</ControlLabel>
-          <textarea
-            className="form-control"
-            name="description"
-            ref={finalMessage => (this.finalMessage = finalMessage)}
-            defaultValue={doc && doc.message}
-            placeholder="Some message congratulating the user for finishing the project..."
+          <ProjectFinalMessageEditor
+            finalMessage={doc.finalMessage}
+            updateFinalMessage={this.updateFinalMessage}
           />
         </FormGroup>
         <Button type="submit" bsStyle="success">

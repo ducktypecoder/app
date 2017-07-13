@@ -18,55 +18,53 @@ it('runs with ducktypecoder', () => {
 
 <p>Create a new directory, name it 'hello-world'</p>
 
-<p>
+<code>
 $ mkdir hello-world
-</p>
+</code>
 
 <p>Change into that directory and create a file: ducktypecoder.js</p>
 
-<p>
+<code>
 $ cd hello-world &amp;&amp; touch ducktypecoder.js
-</p>
+</code>
 
 <p>In that file, export and object containingyour ducktypecoder token and the project name:</p>
 
-<p>
+<code>
 modules.export = {
   token: <yourtokenhere>,
   project: 'hello-world'
-}</p>
+}
 
-<p>// ducktypecoder.js
-</p>
+// ducktypecoder.js
+</code>
 
 <p>Initialize the project as an npm project:</p>
 
-<p>
+<code>
 $ npm init
-</p>
+</code>
 
 <p><em>add your info or just click enter for the defaults</em></p>
 
 <p>Install the ducktypecoder npm package:</p>
 
-<p>
+<code>
 npm install --save-dev ducktypecoder
-</p>
+</code>
 
 <p>Run ducktypecoder and check your progress:</p>
 
-<p>
+<code>
 $ ducktypecoder
-</p>
+</code>
 `,
     },
     {
       order: 2,
       tests: `
-// first, import the file:
 var sayHello = require('./src/say-hello');
 
-// second, test that it works:
 it('says hello world', () => {
   expect(sayHello()).toEqual('Hello world');
 });
@@ -78,13 +76,13 @@ it('says hello world', () => {
 
 <p>First, create a new directory, '/src', and a file in that directory, 'say-hello.js':</p>
 
-<p>$ mkdir /src &amp;&amp; touch say-hello.js</p>
+<code>$ mkdir /src &amp;&amp; touch say-hello.js</code>
 
 <p>Open that file, and add a function that returns the string 'Hello world'.  Hint, that function might look like:</p>
 
-<p>module.exports = function sayHello() {
+<code>module.exports = function sayHello() {
   return 'Hello world';
-};</p>
+};</code>
 
 <p>This should pass. Run ducktype coder and see:</p>
 
@@ -94,10 +92,8 @@ it('says hello world', () => {
     {
       order: 3,
       tests: `
-// first, import the file:
 var sayMyName = require('./src/say-my-name');
 
-// second, test that it works:
 it('says my name', () => {
   const name = 'bob';
   expect(sayMyName(name)).toEqual(name);
@@ -110,13 +106,13 @@ it('says my name', () => {
 
 <p>Make a file in '/src' named 'say-my-name.js' and in that file export a function that returns your name:</p>
 
-<p>module.exports = function sayMyName(name) {
+<code>module.exports = function sayMyName(name) {
   return name;
-};</p>
+};</code>
 
 <p>Again, check with ducktypecoder:</p>
 
-<p>$ ducktypecoder</p>
+<code>$ ducktypecoder</code>
       `,
     },
     {
@@ -124,7 +120,6 @@ it('says my name', () => {
       tests: `
 var addNumbers = require('./src/add-numbers');
 
-// second, test that it works:
 it('adds numbers', () => {
   const num1 = 3;
   const num2 = 4;
@@ -136,19 +131,18 @@ it('adds numbers', () => {
 
 <p>Next, add a function that adds 2 numbers, in '/src/add-numbers':</p>
 
-<p>module.exports = function addNumbers(num1, num2) {
+<code>module.exports = function addNumbers(num1, num2) {
   return num1 + num2;
-};</p>
+};</code>
 
 <p>Run ducktypecoder:</p>
 
-<p>$ ducktypecoder</p>
+<code>$ ducktypecoder</code>
       `,
     },
     {
       order: 5,
       tests: `
-// Now let's test that add number returns NaN if necessary
 var addNumbers = require('./src/add-numbers');
 
 it('returns NaN when appropriate', () => {
@@ -166,9 +160,9 @@ it('returns NaN when appropriate', () => {
 
 <p>In '/src/add-numbers':</p>
 
-<p>module.exports = function addNumbers(num1, num2) {
+<code>module.exports = function addNumbers(num1, num2) {
   return Number(num1) + Number(num2);
-};</p>
+};</code>
 
 <p>Should work, test it with ducktypecoder:</p>
 

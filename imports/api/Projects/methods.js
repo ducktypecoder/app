@@ -7,7 +7,7 @@ Meteor.methods({
   'projects.create': function createProject(title) {
     check(title, String);
 
-    const slug = title.toLowerCase().replace(' ', '-');
+    const slug = title.toLowerCase().replace(/ /gi, '-');
 
     return Projects.insert({ title, slug });
   },

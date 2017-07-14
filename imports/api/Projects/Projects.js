@@ -19,6 +19,20 @@ Projects.deny({
 });
 
 Projects.schema = new SimpleSchema({
+  draft: {
+    type: Boolean,
+    label: 'Projects should begin as drafts',
+    autoValue() {
+      if (this.isInsert) return true;
+    },
+  },
+  createdBy: {
+    type: String,
+    label: 'The project creator',
+    autoValue() {
+      if (this.isInsert) return this.userId;
+    },
+  },
   createdAt: {
     type: String,
     label: 'The date this project was created.',

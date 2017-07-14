@@ -78,7 +78,7 @@ class Signup extends React.Component {
         } else {
           Bert.alert('Welcome!', 'success');
           Meteor.call('users.resetToken');
-          history.push('/documents');
+          history.push('/projects');
         }
       },
     );

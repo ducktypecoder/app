@@ -119,6 +119,7 @@ seeder(Meteor.users, {
   ],
   modelCount: 5,
   model(index, faker) {
+    console.log('seeding user...');
     const userCount = index + 1;
     return {
       email: `user+${userCount}@test.com`,

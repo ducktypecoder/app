@@ -18,6 +18,7 @@ export default function ViewProjectAuthor({ author }) {
           {author.email}
         </a>
       </p>
+      <img src="https://robohash.org/my-own-slug.png?size=50x50" alt="author avatar" />
       <p>
         Bio: {author.bio}
       </p>

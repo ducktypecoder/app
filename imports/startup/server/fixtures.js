@@ -40,6 +40,7 @@ seeder(Projects, {
         email: 'mark@ducktypecoder.com',
         website: 'www.ducktypecoder',
         bio: 'Lorem ipsum developer dog cat puppy kitten',
+        avatar: 'https://robohash.org/my-own-slug.png?size=50x50',
         companyName: 'Launch Brick Labs',
         companyWebsite: 'www.launchbricklabs.com',
         githubUrl: 'https://github.com/ducktypecoder',

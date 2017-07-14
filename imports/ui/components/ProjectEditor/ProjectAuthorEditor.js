@@ -13,6 +13,7 @@ class ProjectAuthorEditor extends React.Component {
       email,
       website,
       bio,
+      avatar,
       companyName,
       companyWebsite,
       githubUrl,
@@ -28,6 +29,7 @@ class ProjectAuthorEditor extends React.Component {
       email,
       website,
       bio,
+      avatar,
       companyName,
       companyWebsite,
       githubUrl,
@@ -47,6 +49,7 @@ class ProjectAuthorEditor extends React.Component {
       email: this.email ? this.email.value : '',
       website: this.website ? this.website.value : '',
       bio: this.bio ? this.bio.value : '',
+      avatar: this.avatar ? this.avatar.value : '',
       companyName: this.companyName ? this.companyName.value : '',
       companyWebsite: this.companyWebsite ? this.companyWebsite.value : '',
       githubUrl: this.githubUrl ? this.githubUrl.value : '',
@@ -98,6 +101,18 @@ class ProjectAuthorEditor extends React.Component {
             ref={bio => (this.bio = bio)}
             value={this.state.bio}
             placeholder="Author bio"
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Avatar link</ControlLabel>
+          <input
+            type="text"
+            onChange={this.onChange}
+            className="form-control"
+            name="avatar"
+            ref={avatar => (this.avatar = avatar)}
+            value={this.state.avatar}
+            placeholder="Author avatar"
           />
         </FormGroup>
         <FormGroup>

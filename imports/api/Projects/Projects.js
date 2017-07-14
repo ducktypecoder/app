@@ -91,6 +91,10 @@ Projects.schema = new SimpleSchema({
     type: String,
     optional: true,
   },
+  'author.avatar': {
+    type: String,
+    optional: true,
+  },
   'author.companyName': {
     type: String,
     optional: true,

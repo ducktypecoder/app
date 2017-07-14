@@ -15,7 +15,7 @@ Meteor.methods({
     check(doc, {
       _id: String,
       title: String,
-      author: Match.Maybe(String),
+      author: Match.Maybe(Object),
       description: Match.Maybe(String),
       finalMessage: Match.Maybe(String),
       steps: Match.Maybe([Object]),

@@ -25,9 +25,7 @@ class ProjectEditor extends React.Component {
     const component = this;
     validate(component.form, {
       rules: {
-        author: {
-          required: true,
-        },
+        // TODO: validate all author info
         title: {
           required: true,
         },
@@ -36,9 +34,6 @@ class ProjectEditor extends React.Component {
         },
       },
       messages: {
-        author: {
-          required: "Tell us the author's name",
-        },
         title: {
           required: 'Need a title in here, Seuss.',
         },
@@ -59,7 +54,7 @@ class ProjectEditor extends React.Component {
   handleSubmit() {
     this.props.updateProject({
       title: this.title.value.trim(),
-      author: this.author.value.trim(),
+      author: this.state.author,
       finalMessage: this.state.finalMessage,
       description: this.description.value.trim(),
       _id: this.props.doc._id,
@@ -96,18 +91,7 @@ class ProjectEditor extends React.Component {
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>Author</ControlLabel>
-          <input
-            type="text"
-            className="form-control"
-            name="author"
-            ref={author => (this.author = author)}
-            defaultValue={doc && doc.author}
-            placeholder="The author's name..."
-          />
-        </FormGroup>
-        <FormGroup>
-          <ControlLabel>Description</ControlLabel>
+          <ControlLabel>Project Description</ControlLabel>
           <textarea
             className="form-control"
             name="description"

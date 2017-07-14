@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Nav, NavItem } from 'react-bootstrap';
 import Projects from '../../../api/Projects/Projects';
 import ProjectEditor from '../../components/ProjectEditor/ProjectEditor';
+import ProjectAuthorEditor from '../../components/ProjectEditor/ProjectAuthorEditor';
 import ProjectStepEditor from '../../components/ProjectEditor/ProjectStepEditor';
 import NotFound from '../NotFound/NotFound';
 
@@ -14,11 +15,13 @@ class EditProject extends React.Component {
 
     this.state = {
       steps: props.doc.steps || [],
+      author: props.doc.author || {},
       activeSidebarItem: 'general',
     };
 
     this.sideNav = this.sideNav.bind(this);
     this.updateProject = this.updateProject.bind(this);
+    this.updateAuthor = this.updateAuthor.bind(this);
     this.removeStep = this.removeStep.bind(this);
     this.updateStep = this.updateStep.bind(this);
     this.handleSectionSelect = this.handleSectionSelect.bind(this);
@@ -36,7 +39,8 @@ class EditProject extends React.Component {
       tests: s.tests,
       order: i + 1,
     }));
-    const projectData = Object.assign({}, doc, { steps });
+    const author = this.state.author;
+    const projectData = Object.assign({}, doc, { steps, author });
     Meteor.call('projects.update', projectData, (error, projectId) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
@@ -45,6 +49,11 @@ class EditProject extends React.Component {
         Bert.alert(confirmation, 'success');
       }
     });
+  }
+
+  updateAuthor(authorInfo) {
+    console.log('EditProject > udpateAuthor > authorInfo: ', authorInfo);
+    this.setState({ author: authorInfo });
   }
 
   removeStep(id) {
@@ -97,6 +106,7 @@ class EditProject extends React.Component {
         onSelect={this.handleSectionSelect}
       >
         <NavItem eventKey="general">General</NavItem>
+        <NavItem eventKey="author">Author</NavItem>
         {steps.map((s, i) =>
           (<NavItem key={i} eventKey={`step-${i + 1}`}>
             Step {i + 1}
@@ -117,6 +127,15 @@ class EditProject extends React.Component {
           doc={doc}
           history={history}
           updateProject={this.updateProject}
+        />
+      );
+    }
+
+    if (activeSidebarItem === 'author') {
+      return (
+        <ProjectAuthorEditor
+          author={doc.author}
+          updateAuthor={this.updateAuthor}
         />
       );
     }

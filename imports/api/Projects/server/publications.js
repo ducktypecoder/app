@@ -13,7 +13,7 @@ Meteor.publish('projects', function publishProjects() {
 });
 
 // Note: projects.view is also used when editing an existing project.
-Meteor.publish('projects.view', function (projectId) {
+Meteor.publish('projects.view', function publishProjectsView(projectId) {
   check(projectId, String);
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);

@@ -100,22 +100,22 @@ class EditProject extends React.Component {
   sideNav() {
     const { steps, activeSidebarItem } = this.state;
 
-    return ( <
-      Nav bsStyle = "pills"
-      stacked activeKey = { activeSidebarItem }
-      onSelect = { this.handleSectionSelect } >
-      <
-      NavItem eventKey = "general" > General < /NavItem> <
-      NavItem eventKey = "author" > Author < /NavItem> {
-      steps.map((s, i) =>
-        ( < NavItem key = { i }
-          eventKey = { `step-${i + 1}` } >
-          Step { i + 1 } <
-          /NavItem>),
-        )
-      } <
-      NavItem eventKey = "addStep" > +Add Step < /NavItem> < /
-      Nav >
+    return (
+      <Nav
+        bsStyle="pills"
+        stacked
+        activeKey={activeSidebarItem}
+        onSelect={this.handleSectionSelect}
+      >
+        <NavItem eventKey="general"> General </NavItem>
+        <NavItem eventKey="author"> Author </NavItem>
+        {steps.map((s, i) =>
+          (<NavItem key={i} eventKey={`step-${i + 1}`}>
+            Step {i + 1}
+          </NavItem>),
+        )}
+        <NavItem eventKey="addStep"> +Add Step </NavItem>
+      </Nav>
     );
   }
 
@@ -124,18 +124,20 @@ class EditProject extends React.Component {
     const { activeSidebarItem, steps } = this.state;
 
     if (activeSidebarItem === 'general') {
-      return ( <
-        ProjectEditor doc = { doc }
-        history = { history }
-        updateProject = { this.updateProject }
+      return (
+        <ProjectEditor
+          doc={doc}
+          history={history}
+          updateProject={this.updateProject}
         />
       );
     }
 
     if (activeSidebarItem === 'author') {
-      return ( <
-        ProjectAuthorEditor author = { doc.author }
-        updateAuthor = { this.updateAuthor }
+      return (
+        <ProjectAuthorEditor
+          author={doc.author}
+          updateAuthor={this.updateAuthor}
         />
       );
     }
@@ -143,16 +145,17 @@ class EditProject extends React.Component {
     const stepIndex = Number(activeSidebarItem.replace('step-', '')) - 1;
     const step = steps[stepIndex];
 
-    return ( <
-      ProjectStepEditor step = { step }
-      content = { step.content }
-      tests = { step.tests }
-      index = { stepIndex }
-      addStep = { this.addStep }
-      removeStep = { this.removeStep }
-      updateStep = { this.updateStep }
-      toggleEditingStep = { this.toggleEditingStep }
-      project = { doc }
+    return (
+      <ProjectStepEditor
+        step={step}
+        content={step.content}
+        tests={step.tests}
+        index={stepIndex}
+        addStep={this.addStep}
+        removeStep={this.removeStep}
+        updateStep={this.updateStep}
+        toggleEditingStep={this.toggleEditingStep}
+        project={doc}
       />
     );
   }
@@ -161,22 +164,22 @@ class EditProject extends React.Component {
     const { doc, loading } = this.props;
     const { steps, activeSidebarItem } = this.state;
 
-    if (loading) return <div / > ;
+    if (loading) return <div />;
 
-    if (!doc) return <NotFound / > ;
+    if (!doc) return <NotFound />;
 
-    return ( <
-      div className = "row" >
-      <
-      div className = "sidebar col-md-2" >
-      <
-      h4 className = "page-header" > & nbsp; < /h4> { this.sideNav() } < /
-      div > <
-      div className = "EditProject col-md-10" >
-      <
-      h4 className = "page-header" > { `Editing "${doc.title}"` } < /h4> { this.activeSection() } < /
-      div > <
-      /div>
+    return (
+      <div className="row">
+        <div className="sidebar col-md-2">
+          <h4 className="page-header"> &nbsp; </h4> {this.sideNav()}
+        </div>
+        <div className="EditProject col-md-10">
+          <h4 className="page-header">
+            {`Editing "${doc.title}"`}
+          </h4>
+          {this.activeSection()}
+        </div>
+      </div>
     );
   }
 }

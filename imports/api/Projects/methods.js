@@ -9,7 +9,7 @@ Meteor.methods({
 
     const slug = title.toLowerCase().replace(/ /gi, '-');
     const createdBy = this.userId;
-    const draft = false;
+    const draft = true;
 
     return Projects.insert({ title, slug, createdBy, draft });
   },

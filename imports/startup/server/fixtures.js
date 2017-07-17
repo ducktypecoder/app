@@ -1,7 +1,6 @@
 import seeder from '@cleverbeagle/seeder';
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import Documents from '../../api/Documents/Documents';
 import Projects from '../../api/Projects/Projects';
 import helloWorldProjectData from './hello-world-project-data';
 
@@ -23,7 +22,6 @@ const projectSeed = userId => ({
 });
 
 const adminProjectSeed = userId => ({
-  wipe: true,
   collection: Projects,
   environments: ['development', 'staging'],
   modelCount: 1,
@@ -113,9 +111,9 @@ function setToken(userId) {
 }
 
 seeder(Meteor.users, {
-  wipe: true,
-  environments: ['development', 'staging'],
+  // wipe: true,
   // noLimit: true,
+  environments: ['development', 'staging'],
   modelCount: 6,
   model(index, faker) {
     if (index == 0) {

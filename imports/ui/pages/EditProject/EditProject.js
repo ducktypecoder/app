@@ -13,19 +13,11 @@ class EditProject extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('EditProject > constructor > props.doc: ', props.doc);
-    console.log('EditProject > constructor > props.loading: ', props.loading);
-
     this.state = {
       steps: props.doc.steps || [],
       author: props.doc.author || {},
       activeSidebarItem: 'general',
     };
-
-    console.log(
-      'EditProject > constructor > this.state.steps: ',
-      this.state.steps,
-    );
 
     this.sideNav = this.sideNav.bind(this);
     this.updateProject = this.updateProject.bind(this);
@@ -49,6 +41,7 @@ class EditProject extends React.Component {
     }));
     const author = this.state.author;
     const projectData = Object.assign({}, doc, { steps, author });
+
     Meteor.call('projects.update', projectData, (error, projectId) => {
       if (error) {
         Bert.alert(error.reason, 'danger');
@@ -60,14 +53,15 @@ class EditProject extends React.Component {
   }
 
   updateAuthor(authorInfo) {
-    console.log('EditProject > udpateAuthor > authorInfo: ', authorInfo);
     this.setState({ author: authorInfo });
   }
 
   removeStep(id) {
     if (!window.confirm('Are you sure you want to delete this step?')) return;
+
     const steps = [...this.state.steps];
     const stepIndex = steps.findIndex(s => s.id === id);
+
     steps.splice(stepIndex, 1);
     this.setState({ steps });
   }
@@ -106,22 +100,22 @@ class EditProject extends React.Component {
   sideNav() {
     const { steps, activeSidebarItem } = this.state;
 
-    return (
-      <Nav
-        bsStyle="pills"
-        stacked
-        activeKey={activeSidebarItem}
-        onSelect={this.handleSectionSelect}
-      >
-        <NavItem eventKey="general">General</NavItem>
-        <NavItem eventKey="author">Author</NavItem>
-        {steps.map((s, i) =>
-          (<NavItem key={i} eventKey={`step-${i + 1}`}>
-            Step {i + 1}
-          </NavItem>),
-        )}
-        <NavItem eventKey="addStep">+ Add Step</NavItem>
-      </Nav>
+    return ( <
+      Nav bsStyle = "pills"
+      stacked activeKey = { activeSidebarItem }
+      onSelect = { this.handleSectionSelect } >
+      <
+      NavItem eventKey = "general" > General < /NavItem> <
+      NavItem eventKey = "author" > Author < /NavItem> {
+      steps.map((s, i) =>
+        ( < NavItem key = { i }
+          eventKey = { `step-${i + 1}` } >
+          Step { i + 1 } <
+          /NavItem>),
+        )
+      } <
+      NavItem eventKey = "addStep" > +Add Step < /NavItem> < /
+      Nav >
     );
   }
 
@@ -130,20 +124,18 @@ class EditProject extends React.Component {
     const { activeSidebarItem, steps } = this.state;
 
     if (activeSidebarItem === 'general') {
-      return (
-        <ProjectEditor
-          doc={doc}
-          history={history}
-          updateProject={this.updateProject}
+      return ( <
+        ProjectEditor doc = { doc }
+        history = { history }
+        updateProject = { this.updateProject }
         />
       );
     }
 
     if (activeSidebarItem === 'author') {
-      return (
-        <ProjectAuthorEditor
-          author={doc.author}
-          updateAuthor={this.updateAuthor}
+      return ( <
+        ProjectAuthorEditor author = { doc.author }
+        updateAuthor = { this.updateAuthor }
         />
       );
     }
@@ -151,17 +143,16 @@ class EditProject extends React.Component {
     const stepIndex = Number(activeSidebarItem.replace('step-', '')) - 1;
     const step = steps[stepIndex];
 
-    return (
-      <ProjectStepEditor
-        step={step}
-        content={step.content}
-        tests={step.tests}
-        index={stepIndex}
-        addStep={this.addStep}
-        removeStep={this.removeStep}
-        updateStep={this.updateStep}
-        toggleEditingStep={this.toggleEditingStep}
-        project={doc}
+    return ( <
+      ProjectStepEditor step = { step }
+      content = { step.content }
+      tests = { step.tests }
+      index = { stepIndex }
+      addStep = { this.addStep }
+      removeStep = { this.removeStep }
+      updateStep = { this.updateStep }
+      toggleEditingStep = { this.toggleEditingStep }
+      project = { doc }
       />
     );
   }
@@ -170,23 +161,22 @@ class EditProject extends React.Component {
     const { doc, loading } = this.props;
     const { steps, activeSidebarItem } = this.state;
 
-    if (loading) return <div />;
-    console.log('EditProject > render');
-    console.log({ doc });
-    console.log({ loading });
-    if (!doc) return <NotFound />;
+    if (loading) return <div / > ;
 
-    return (
-      <div className="row">
-        <div className="sidebar col-md-2">
-          <h4 className="page-header">&nbsp;</h4>
-          {this.sideNav()}
-        </div>
-        <div className="EditProject col-md-10">
-          <h4 className="page-header">{`Editing "${doc.title}"`}</h4>
-          {this.activeSection()}
-        </div>
-      </div>
+    if (!doc) return <NotFound / > ;
+
+    return ( <
+      div className = "row" >
+      <
+      div className = "sidebar col-md-2" >
+      <
+      h4 className = "page-header" > & nbsp; < /h4> { this.sideNav() } < /
+      div > <
+      div className = "EditProject col-md-10" >
+      <
+      h4 className = "page-header" > { `Editing "${doc.title}"` } < /h4> { this.activeSection() } < /
+      div > <
+      /div>
     );
   }
 }
@@ -202,6 +192,6 @@ export default createContainer(({ match }) => {
 
   return {
     loading: !subscription.ready(),
-    doc: Projects.find(projectId),
+    doc: Projects.findOne(projectId) || {},
   };
 }, EditProject);

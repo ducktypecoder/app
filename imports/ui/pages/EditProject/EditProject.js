@@ -13,11 +13,19 @@ class EditProject extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log('EditProject > constructor > props.doc: ', props.doc);
+    console.log('EditProject > constructor > props.loading: ', props.loading);
+
     this.state = {
       steps: props.doc.steps || [],
       author: props.doc.author || {},
       activeSidebarItem: 'general',
     };
+
+    console.log(
+      'EditProject > constructor > this.state.steps: ',
+      this.state.steps,
+    );
 
     this.sideNav = this.sideNav.bind(this);
     this.updateProject = this.updateProject.bind(this);
@@ -28,9 +36,9 @@ class EditProject extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { doc } = nextProps;
+    const { doc } = nextProps || {};
 
-    this.setState({ steps: [...doc.steps] });
+    if (doc.steps) this.setState({ steps: [...doc.steps] });
   }
 
   updateProject(doc) {
@@ -163,6 +171,9 @@ class EditProject extends React.Component {
     const { steps, activeSidebarItem } = this.state;
 
     if (loading) return <div />;
+    console.log('EditProject > render');
+    console.log({ doc });
+    console.log({ loading });
     if (!doc) return <NotFound />;
 
     return (
@@ -191,6 +202,6 @@ export default createContainer(({ match }) => {
 
   return {
     loading: !subscription.ready(),
-    doc: Projects.findOne(projectId) || {},
+    doc: Projects.find(projectId),
   };
 }, EditProject);

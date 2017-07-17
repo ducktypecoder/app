@@ -8,8 +8,10 @@ Meteor.methods({
     check(title, String);
 
     const slug = title.toLowerCase().replace(/ /gi, '-');
+    const createdBy = this.userId;
+    const draft = false;
 
-    return Projects.insert({ title, slug });
+    return Projects.insert({ title, slug, createdBy, draft });
   },
   'projects.update': function updateProject(doc) {
     check(doc, {

@@ -14,6 +14,7 @@ export default {
     linkedIn: '',
     other: 'https://www.mhurwi.com',
   },
+  draft: false,
   title: 'Hello World',
   slug: 'hello-world',
   description: 'This is the very first ducktypecoder project',

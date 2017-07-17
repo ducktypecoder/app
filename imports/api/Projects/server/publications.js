@@ -2,10 +2,28 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import Projects from '../Projects';
 
-Meteor.publish('projects', () => Projects.find());
+Meteor.publish('projects', function publishProjects() {
+  const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
+
+  if (userIsAdmin) return Projects.find();
+
+  return Projects.find({
+    $or: [{ createdBy: this.userId }, { draft: { $ne: true } }],
+  });
+});
 
 // Note: projects.view is also used when editing an existing project.
-Meteor.publish('projects.view', (projectId) => {
+Meteor.publish('projects.view', function (projectId) {
   check(projectId, String);
-  return Projects.find({ _id: projectId });
+
+  const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
+
+  console.log('Projects > publications > projects.view');
+
+  if (userIsAdmin) return Projects.find({ _id: projectId });
+
+  return Projects.find({
+    _id: projectId,
+    $or: [{ createdBy: this.userId }, { draft: { $ne: true } }],
+  });
 });

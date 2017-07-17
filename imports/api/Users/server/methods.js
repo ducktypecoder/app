@@ -32,6 +32,16 @@ Meteor.methods({
       },
     );
   },
+  // TODO: method to seed an admin user
+  // 'users.seedAdmin': function seedAdmin() {
+  //   let admin;
+  //
+  //   admin = Meteor.users.findOne({'emails.address': 'admin@test.com'});
+  //
+  //   if (admin) return;
+  //
+  //   Meteor.
+  // }
 });
 
 rateLimit({

@@ -32,6 +32,18 @@ Meteor.methods({
       throw new Meteor.Error('500', exception);
     }
   },
+  'projects.publish': function publishProject(_id) {
+    check(_id, String);
+
+    const result = Projects.update(_id, { $set: { draft: false } });
+    return result;
+  },
+  'projects.unpublish': function unpublishProject(_id) {
+    check(_id, String);
+
+    const result = Projects.update(_id, { $set: { draft: true } });
+    return result;
+  },
   'projects.seed': function seedProject(opts) {
     // To overwrite the default 'hello-world' project:
     // Meteor.call('projects.seed', { force: true })

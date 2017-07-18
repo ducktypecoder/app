@@ -35,10 +35,11 @@ function Projects({ user, loading, projects, match, history }) {
               <th>Created</th>
               <th />
               <th />
+              <th />
             </tr>
           </thead>
           <tbody>
-            {projects.map(({ _id, title, createdAt, updatedAt }) =>
+            {projects.map(({ _id, title, createdAt, updatedAt, draft }) =>
                 (<tr key={_id}>
                   <td>
                     {title}
@@ -48,6 +49,9 @@ function Projects({ user, loading, projects, match, history }) {
                   </td>
                   <td>
                     {monthDayYearAtTime(createdAt)}
+                  </td>
+                  <td>
+                    {draft ? 'draft' : ''}
                   </td>
                   <td>
                     <Button

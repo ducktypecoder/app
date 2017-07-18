@@ -6,6 +6,7 @@ import { Nav, NavItem } from 'react-bootstrap';
 import Projects from '../../../api/Projects/Projects';
 import ProjectEditor from '../../components/ProjectEditor/ProjectEditor';
 import ProjectAuthorEditor from '../../components/ProjectEditor/ProjectAuthorEditor';
+import ProjectSettingsEditor from '../../components/ProjectEditor/ProjectSettingsEditor';
 import ProjectStepEditor from '../../components/ProjectEditor/ProjectStepEditor';
 import NotFound from '../NotFound/NotFound';
 
@@ -24,6 +25,8 @@ class EditProject extends React.Component {
     this.updateAuthor = this.updateAuthor.bind(this);
     this.removeStep = this.removeStep.bind(this);
     this.updateStep = this.updateStep.bind(this);
+    this.publish = this.publish.bind(this);
+    this.unpublish = this.unpublish.bind(this);
     this.handleSectionSelect = this.handleSectionSelect.bind(this);
   }
 
@@ -78,6 +81,26 @@ class EditProject extends React.Component {
     this.setState({ steps });
   }
 
+  publish() {
+    const { doc } = this.props;
+    console.log('publish!');
+    Meteor.call('projects.publish', doc._id, (err, result) => {
+      if (err) console.log(err);
+
+      Bert.alert('Project published!', 'success');
+    });
+  }
+
+  unpublish() {
+    const { doc } = this.props;
+    console.log('unpublish!');
+    Meteor.call('projects.unpublish', doc._id, (err, result) => {
+      if (err) console.log(err);
+
+      Bert.alert('Project switched to draft!', 'success');
+    });
+  }
+
   handleSectionSelect(key) {
     switch (key) {
       case 'addStep':
@@ -90,6 +113,9 @@ class EditProject extends React.Component {
         return;
       case 'general':
         this.setState({ activeSidebarItem: 'general' });
+        return;
+      case 'settings':
+        this.setState({ activeSidebarItem: 'settings' });
         return;
       default:
         this.setState({ activeSidebarItem: key });
@@ -109,6 +135,7 @@ class EditProject extends React.Component {
       >
         <NavItem eventKey="general"> General </NavItem>
         <NavItem eventKey="author"> Author </NavItem>
+        <NavItem eventKey="settings"> Settings </NavItem>
         {steps.map((s, i) =>
           (<NavItem key={i} eventKey={`step-${i + 1}`}>
             Step {i + 1}
@@ -120,7 +147,7 @@ class EditProject extends React.Component {
   }
 
   activeSection() {
-    const { doc, history } = this.props;
+    const { doc, user, history } = this.props;
     const { activeSidebarItem, steps } = this.state;
 
     if (activeSidebarItem === 'general') {
@@ -138,6 +165,17 @@ class EditProject extends React.Component {
         <ProjectAuthorEditor
           author={doc.author}
           updateAuthor={this.updateAuthor}
+        />
+      );
+    }
+
+    if (activeSidebarItem === 'settings') {
+      return (
+        <ProjectSettingsEditor
+          doc={doc}
+          user={user}
+          publish={this.publish}
+          unpublish={this.unpublish}
         />
       );
     }
@@ -196,5 +234,6 @@ export default createContainer(({ match }) => {
   return {
     loading: !subscription.ready(),
     doc: Projects.findOne(projectId) || {},
+    user: Meteor.user(),
   };
 }, EditProject);

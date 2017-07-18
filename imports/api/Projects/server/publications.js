@@ -12,7 +12,6 @@ Meteor.publish('projects', function publishProjects() {
   });
 });
 
-// Note: projects.view is also used when editing an existing project.
 Meteor.publish('projects.view', function publishProjectsView(projectId) {
   check(projectId, String);
 
@@ -25,5 +24,20 @@ Meteor.publish('projects.view', function publishProjectsView(projectId) {
   return Projects.find({
     _id: projectId,
     $or: [{ createdBy: this.userId }, { draft: { $ne: true } }],
+  });
+});
+
+Meteor.publish('projects.edit', function publishProjectsView(projectId) {
+  check(projectId, String);
+
+  const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
+
+  console.log('Projects > publications > projects.view');
+
+  if (userIsAdmin) return Projects.find({ _id: projectId });
+
+  return Projects.find({
+    _id: projectId,
+    createdBy: this.userId,
   });
 });

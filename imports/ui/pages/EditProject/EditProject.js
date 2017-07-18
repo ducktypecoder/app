@@ -199,12 +199,19 @@ class EditProject extends React.Component {
   }
 
   render() {
-    const { doc, loading } = this.props;
+    const { doc, user, loading } = this.props;
     const { steps, activeSidebarItem } = this.state;
+
+    const userProhibited =
+      !Roles.userIsInRole(user, ['admin']) && doc.createdBy !== user._id;
 
     if (loading) return <div />;
 
     if (!doc) return <NotFound />;
+
+    if (userProhibited) {
+      return <h4>You are not authorized to edit this document.</h4>;
+    }
 
     return (
       <div className="row">
@@ -229,7 +236,7 @@ EditProject.propTypes = {
 
 export default createContainer(({ match }) => {
   const projectId = match.params._id;
-  const subscription = Meteor.subscribe('projects.view', projectId);
+  const subscription = Meteor.subscribe('projects.edit', projectId);
 
   return {
     loading: !subscription.ready(),

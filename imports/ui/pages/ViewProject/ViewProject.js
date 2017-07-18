@@ -85,13 +85,16 @@ function ViewProject({ loading, doc, user, match }) {
   if (loading) return <Loading />;
   if (!doc) return <NotFound />;
 
+  const userCanEdit =
+    Roles.userIsInRole(user, ['admin']) || doc.createdBy == user._id;
+
   return (
     <div className="ViewProject">
       <div className="page-header clearfix">
         <h4 className="pull-left">
           {doc && doc.title}
         </h4>
-        {user
+        {userCanEdit
           ? <Link
             className="btn btn-success pull-right"
             to={`${match.url}/edit`}

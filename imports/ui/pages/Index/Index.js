@@ -25,7 +25,9 @@ function Index() {
           unlock the next step.
         </p>
         <p>
-          <Link to="/projects">&rarr; Check out an example project.</Link>
+          <Link to="/projects/hello-world">
+            &rarr; Check out an example project.
+          </Link>
         </p>
       </div>
     </div>

@@ -118,14 +118,15 @@ ViewProject.propTypes = {
 };
 
 export default createContainer(({ match }) => {
-  const projectId = match.params._id;
-  const subscription = Meteor.subscribe('projects.view', projectId);
+  const idOrSlug = match.params._id;
+  const subscription = Meteor.subscribe('projects.view', idOrSlug);
   const answersSubscription = Meteor.subscribe('users.projectAnswers');
 
   return {
     loading: !subscription.ready(),
     loadingAnswers: !answersSubscription.ready(),
-    doc: Projects.findOne(projectId) || {},
+    doc:
+      Projects.findOne(idOrSlug) || Projects.findOne({ slug: idOrSlug }) || {},
     user: Meteor.user(),
     match,
   };

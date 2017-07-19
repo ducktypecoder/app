@@ -39,31 +39,32 @@ function Projects({ user, loading, projects, match, history }) {
             </tr>
           </thead>
           <tbody>
-            {projects.map(({ _id, title, createdAt, updatedAt, draft }) =>
-                (<tr key={_id}>
-                  <td>
-                    {title}
-                  </td>
-                  <td>
-                    {timeago(updatedAt)}
-                  </td>
-                  <td>
-                    {monthDayYearAtTime(createdAt)}
-                  </td>
-                  <td>
-                    {draft ? 'draft' : ''}
-                  </td>
-                  <td>
-                    <Button
-                      bsStyle="primary"
-                      onClick={() => history.push(`${match.url}/${_id}`)}
-                      block
-                    >
-                      View
-                    </Button>
-                  </td>
-                  <td />
-                </tr>),
+            {projects.map(
+                ({ _id, slug, title, createdAt, updatedAt, draft }) =>
+                  (<tr key={_id}>
+                    <td>
+                      {title}
+                    </td>
+                    <td>
+                      {timeago(updatedAt)}
+                    </td>
+                    <td>
+                      {monthDayYearAtTime(createdAt)}
+                    </td>
+                    <td>
+                      {draft ? 'draft' : ''}
+                    </td>
+                    <td>
+                      <Button
+                        bsStyle="primary"
+                        onClick={() => history.push(`${match.url}/${slug}`)}
+                        block
+                      >
+                        View
+                      </Button>
+                    </td>
+                    <td />
+                  </tr>),
               )}
           </tbody>
         </Table>

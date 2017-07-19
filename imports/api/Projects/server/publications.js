@@ -12,16 +12,18 @@ Meteor.publish('projects', function publishProjects() {
   });
 });
 
-Meteor.publish('projects.view', function publishProjectsView(projectId) {
-  check(projectId, String);
+Meteor.publish('projects.view', function publishProjectsView(idOrSlug) {
+  check(idOrSlug, String);
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
 
-  if (userIsAdmin) return Projects.find({ _id: projectId });
+  if (userIsAdmin) return Projects.find({ _id: idOrSlug });
 
   return Projects.find({
-    _id: projectId,
-    $or: [{ createdBy: this.userId }, { draft: { $ne: true } }],
+    $and: [
+      { $or: [{ _id: idOrSlug }, { slug: idOrSlug }] },
+      { $or: [{ createdBy: this.userId }, { draft: { $ne: true } }] },
+    ],
   });
 });
 

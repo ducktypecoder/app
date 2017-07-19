@@ -30,6 +30,7 @@ class ProjectStepEditor extends React.Component {
     super(props);
 
     let editorState;
+
     // https://github.com/facebook/draft-js/issues/284
     if (props.content) {
       const blocksFromHTML = convertFromHTML(props.content);
@@ -84,7 +85,7 @@ class ProjectStepEditor extends React.Component {
   }
 
   handleRemove() {
-    this.props.removeStep(this.props.step.id);
+    this.props.removeStep(this.props.index);
   }
 
   render() {
@@ -108,14 +109,15 @@ class ProjectStepEditor extends React.Component {
           toolbarStyle={toolbarStyle}
         />
 
-        {/*
-          TODO: codemirror value not changing when selecting between different steps in the EditProject nav
-           */}
         <CodeMirror
           value={tests}
           onChange={this.onTestsChange}
           options={codeMirrorOptions}
         />
+
+        <Button bsSize="xs" onClick={this.handleRemove}>
+          remove step
+        </Button>
       </div>
     );
   }

@@ -103,14 +103,13 @@ class EditProject extends React.Component {
     this.setState({ steps });
   }
 
-  removeStep(id) {
+  removeStep(index) {
     if (!window.confirm('Are you sure you want to delete this step?')) return;
 
     const steps = [...this.state.steps];
-    const stepIndex = steps.findIndex(s => s.id === id);
 
-    steps.splice(stepIndex, 1);
-    this.setState({ steps });
+    steps.splice(index, 1);
+    this.setState({ steps, activeSidebarItem: 'general' });
   }
 
   publish() {

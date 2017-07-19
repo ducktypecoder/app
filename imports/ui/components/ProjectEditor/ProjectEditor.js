@@ -13,11 +13,15 @@ class ProjectEditor extends React.Component {
     super(props);
 
     this.state = {
+      title: props.doc.title || '',
+      description: props.doc.description || '',
       finalMessage:
         props.doc.finalMessage ||
         'A congratulatory message for the user on completing this tutorial...',
     };
 
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.updateFinalMessage = this.updateFinalMessage.bind(this);
   }
 
@@ -48,17 +52,21 @@ class ProjectEditor extends React.Component {
   }
 
   updateFinalMessage(finalMessage) {
-    this.setState({ finalMessage });
+    this.props.updateFinalMessage(finalMessage);
+  }
+
+  onTitleChange() {
+    this.setState({ title: this.title.value });
+    this.props.updateTitle(this.title.value.trim());
+  }
+
+  onDescriptionChange() {
+    this.setState({ description: this.description.value });
+    this.props.updateDescription(this.description.value.trim());
   }
 
   handleSubmit() {
-    this.props.updateProject({
-      title: this.title.value.trim(),
-      author: this.state.author,
-      finalMessage: this.state.finalMessage,
-      description: this.description.value.trim(),
-      _id: this.props.doc._id,
-    });
+    // no op, use 'save' button in side nav
   }
 
   render() {
@@ -74,8 +82,9 @@ class ProjectEditor extends React.Component {
             type="text"
             className="form-control"
             name="title"
+            onChange={this.onTitleChange}
             ref={title => (this.title = title)}
-            defaultValue={doc && doc.title}
+            value={this.state.title}
             placeholder="Oh, The Places You'll Go!"
           />
         </FormGroup>
@@ -95,8 +104,9 @@ class ProjectEditor extends React.Component {
           <textarea
             className="form-control"
             name="description"
+            onChange={this.onDescriptionChange}
             ref={description => (this.description = description)}
-            defaultValue={doc && doc.description}
+            value={this.state.description}
             placeholder="Tell what the user will learn as they work through this project..."
           />
         </FormGroup>
@@ -107,9 +117,6 @@ class ProjectEditor extends React.Component {
             updateFinalMessage={this.updateFinalMessage}
           />
         </FormGroup>
-        <Button type="submit" bsStyle="success">
-          {doc && doc._id ? 'Save Changes' : 'Add Project'}
-        </Button>
       </form>
     );
   }

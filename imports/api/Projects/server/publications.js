@@ -17,8 +17,6 @@ Meteor.publish('projects.view', function publishProjectsView(projectId) {
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
 
-  console.log('Projects > publications > projects.view');
-
   if (userIsAdmin) return Projects.find({ _id: projectId });
 
   return Projects.find({
@@ -31,8 +29,6 @@ Meteor.publish('projects.edit', function publishProjectsView(projectId) {
   check(projectId, String);
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
-
-  console.log('Projects > publications > projects.view');
 
   if (userIsAdmin) return Projects.find({ _id: projectId });
 

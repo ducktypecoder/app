@@ -56,6 +56,7 @@ Meteor.methods({
 
     const slug = opts.slug || 'hello-world';
     const projectDoc = Projects.findOne({ slug });
+    const createdBy = this.userId;
 
     if (projectDoc && !opts.force) {
       console.log('project already exists. will not overwrite.');
@@ -67,6 +68,8 @@ Meteor.methods({
     // data defaults to 'hello-world' project
     let data;
     if (slug == 'hello-world') data = helloWorldProjectData;
+
+    data.createdBy = createdBy;
 
     const result = Projects.insert(data);
     return result;

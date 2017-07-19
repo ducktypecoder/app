@@ -86,7 +86,7 @@ function ViewProject({ loading, doc, user, match }) {
   if (!doc) return <NotFound />;
 
   const userCanEdit =
-    Roles.userIsInRole(user, ['admin']) || doc.createdBy == user._id;
+    user && (Roles.userIsInRole(user, ['admin']) || doc.createdBy == user._id);
 
   return (
     <div className="ViewProject">

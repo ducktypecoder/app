@@ -9,17 +9,15 @@
   background: $cb-blue;
 
   .hero {
+    width: 100%;
     background: $cb-blue;
   }
 
   .main-action {
-    background: darken($cb-blue, 25%);
-    border-radius: 5px;
-    padding: 20px;
+    padding-top: 30px;
 
     a {
       color: lighten($cb-blue, 35%);
-      font-size: 2.2em;
     }
   }
 

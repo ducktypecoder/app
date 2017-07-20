@@ -14,21 +14,14 @@ function Index() {
       <div className="hero">
         <h1>ducktypecoder</h1>
         <p>
-          Create real-world projects following well-written tutorials and
-          step-by-step automated tests.
+          Practical software development tutorials guided by helpful automated
+          tests.
         </p>
       </div>
-      <div className="content">
-        <p>Complete a project on your own machine.</p>
-        <p>
-          Run the <code>ducktypecoder</code> command to test your progress and
-          unlock the next step.
-        </p>
-        <p>
-          <Link to="/projects/hello-world">
-            &rarr; Check out an example project.
-          </Link>
-        </p>
+      <div className="main-action">
+        <Link to="/projects/hello-world" className="btn btn-success">
+          &rarr; See an example project.
+        </Link>
       </div>
     </div>
   );

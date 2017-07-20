@@ -1,6 +1,17 @@
+@import '../../stylesheets/colors';
+
 .navbar {
   border-radius: 0;
   border-left: none;
   border-right: none;
   border-top: none;
+  border-color: darken($cb-blue, 50%);
+  background: lighten($cb-blue, 25%);
+}
+.navbar-default .navbar-brand {
+  color: darken($cb-blue, 35%);
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: darken($cb-blue, 25%);
 }

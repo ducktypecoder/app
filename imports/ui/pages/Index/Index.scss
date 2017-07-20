@@ -6,13 +6,21 @@
   text-align: center;
   border-radius: 3px;
   color: #fff;
+  background: $cb-blue;
 
   .hero {
     background: $cb-blue;
   }
 
-  .content {
+  .main-action {
     background: darken($cb-blue, 25%);
+    border-radius: 5px;
+    padding: 20px;
+
+    a {
+      color: lighten($cb-blue, 35%);
+      font-size: 2.2em;
+    }
   }
 
   img {
@@ -26,12 +34,12 @@
 
   p {
     font-size: 18px;
-    color: lighten($cb-blue, 25%);
+    color: lighten($cb-blue, 35%);
   }
 
   p a {
     font-size: 24px;
-    color: lighten($cb-blue, 25%);
+    color: lighten($cb-blue, 35%);
   }
 
   > div {

@@ -17,7 +17,7 @@ Meteor.publish('projects.view', function publishProjectsView(idOrSlug) {
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
 
-  if (userIsAdmin) return Projects.find({ _id: idOrSlug });
+  if (userIsAdmin) { return Projects.find({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] }); }
 
   return Projects.find({
     $and: [

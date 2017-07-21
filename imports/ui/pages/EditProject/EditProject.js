@@ -175,6 +175,7 @@ class EditProject extends React.Component {
             history={history}
             project={doc}
             publish={this.publish}
+            removeStep={this.removeStep}
             steps={this.state.steps}
             toggleEditingStep={this.toggleEditingStep}
             unpublish={this.unpublish}

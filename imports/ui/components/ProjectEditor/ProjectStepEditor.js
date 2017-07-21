@@ -19,10 +19,8 @@ class ProjectStepEditor extends React.Component {
   constructor(props) {
     super(props);
 
-    const tests = props.tests ? props.tests : '// TODO: tests for this step...';
-
     this.state = {
-      tests,
+      tests: props.tests ? props.tests : '// TODO: tests for this step...',
     };
 
     this.handleRemove = this.handleRemove.bind(this);
@@ -39,7 +37,6 @@ class ProjectStepEditor extends React.Component {
     // https://github.com/facebook/draft-js/issues/284
     const { content, tests } = nextProps;
     this.setState({
-      editorState,
       tests: tests || '// TODO: write tests for this step',
     });
   }
@@ -63,7 +60,7 @@ class ProjectStepEditor extends React.Component {
   }
 
   render() {
-    const { step, updateStep } = this.props;
+    const { content, updateStep, index } = this.props;
     const { tests } = this.state;
     const codeMirrorOptions = {
       lineNumbers: true,
@@ -72,7 +69,7 @@ class ProjectStepEditor extends React.Component {
 
     return (
       <div>
-        <Editor content={step.content} onChange={this.updateContent} />
+        <Editor key={index} content={content} onChange={this.updateContent} />
         <br />
         <hr />
         <h4>Tests: </h4>
@@ -92,6 +89,8 @@ class ProjectStepEditor extends React.Component {
 
 ProjectStepEditor.propTypes = {
   step: PropTypes.object.isRequired,
+  tests: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   updateStep: PropTypes.func.isRequired,
 };

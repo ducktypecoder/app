@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
-import { Nav, NavItem } from 'react-bootstrap';
 import Projects from '../../../api/Projects/Projects';
-import ProjectEditor from '../../components/ProjectEditor/ProjectEditor';
-import ProjectAuthorEditor from '../../components/ProjectEditor/ProjectAuthorEditor';
-import ProjectSettingsEditor from '../../components/ProjectEditor/ProjectSettingsEditor';
-import ProjectStepEditor from '../../components/ProjectEditor/ProjectStepEditor';
+import ProjectEditorSideNav from '../../components/ProjectEditor/ProjectEditorSideNav';
+import ProjectEditorActiveSection from '../../components/ProjectEditor/ProjectEditorActiveSection';
 import NotFound from '../NotFound/NotFound';
 
 class EditProject extends React.Component {
@@ -23,7 +20,6 @@ class EditProject extends React.Component {
       steps: props.doc.steps || [],
     };
 
-    this.sideNav = this.sideNav.bind(this);
     this.updateProject = this.updateProject.bind(this);
     this.updateAuthor = this.updateAuthor.bind(this);
     this.removeStep = this.removeStep.bind(this);
@@ -33,7 +29,8 @@ class EditProject extends React.Component {
     this.updateStep = this.updateStep.bind(this);
     this.publish = this.publish.bind(this);
     this.unpublish = this.unpublish.bind(this);
-    this.handleSectionSelect = this.handleSectionSelect.bind(this);
+    this.addStep = this.addStep.bind(this);
+    this.updateActiveSidebarItem = this.updateActiveSidebarItem.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,6 +41,10 @@ class EditProject extends React.Component {
     if (doc.finalMessage) this.setState({ finalMessage: doc.finalMessage });
     if (doc.description) this.setState({ description: doc.description });
     if (doc.author) this.setState({ author: doc.author });
+  }
+
+  updateActiveSidebarItem(key) {
+    this.setState({ activeSidebarItem: key });
   }
 
   updateProject() {
@@ -61,8 +62,6 @@ class EditProject extends React.Component {
       title,
       description,
     };
-
-    console.log({ projectData });
 
     Meteor.call('projects.update', projectData, (error, projectId) => {
       if (error) {
@@ -90,6 +89,15 @@ class EditProject extends React.Component {
     this.setState({ description });
   }
 
+  addStep() {
+    const steps = [...this.state.steps];
+    steps.push({ content: '', tests: '' });
+    this.setState({
+      steps,
+      activeSidebarItem: `step-${steps.length}`,
+    });
+  }
+
   updateStep(index, content, tests) {
     const { steps } = this.state;
     const stepToUpdate = steps[index];
@@ -113,7 +121,7 @@ class EditProject extends React.Component {
 
   publish() {
     const { doc } = this.props;
-    console.log('publish!');
+
     Meteor.call('projects.publish', doc._id, (err, result) => {
       if (err) console.log(err);
 
@@ -123,7 +131,6 @@ class EditProject extends React.Component {
 
   unpublish() {
     const { doc } = this.props;
-    console.log('unpublish!');
     Meteor.call('projects.unpublish', doc._id, (err, result) => {
       if (err) console.log(err);
 
@@ -131,130 +138,8 @@ class EditProject extends React.Component {
     });
   }
 
-  // Handle each time a side nav link is clicked
-  handleSectionSelect(key) {
-    const { doc } = this.props;
-    const data = {
-      _id: doc._id,
-      title: doc.title,
-      author: doc.author,
-      description: doc.description,
-      finalMessage: doc.finalMessage,
-      steps: doc.steps,
-    };
-    switch (key) {
-      case 'addStep':
-        const steps = [...this.state.steps];
-        steps.push({ content: '', tests: '' });
-        this.setState({
-          steps,
-          activeSidebarItem: `step-${steps.length}`,
-        });
-        return;
-      case 'general':
-        this.setState({ activeSidebarItem: 'general' });
-        return;
-      case 'settings':
-        this.setState({ activeSidebarItem: 'settings' });
-        return;
-      case 'view':
-        this.updateProject(data);
-        this.props.history.push(`/projects/${data._id}`);
-        return;
-      case 'save':
-        this.updateProject(data);
-        return;
-      default:
-        this.setState({ activeSidebarItem: key });
-        this.forceUpdate();
-    }
-  }
-
-  // Side nav for choosing which section to make active
-  sideNav() {
-    const { steps, activeSidebarItem } = this.state;
-
-    return (
-      <Nav
-        bsStyle="pills"
-        stacked
-        activeKey={activeSidebarItem}
-        onSelect={this.handleSectionSelect}
-      >
-        <NavItem eventKey="general"> General </NavItem>
-        <NavItem eventKey="author"> Author </NavItem>
-        <NavItem eventKey="settings"> Settings </NavItem>
-        {steps.map((s, i) =>
-          (<NavItem key={i} eventKey={`step-${i + 1}`}>
-            Step {i + 1}
-          </NavItem>),
-        )}
-        <NavItem eventKey="addStep"> + Add Step </NavItem>
-        <NavItem eventKey="view"> Save & View &rarr; </NavItem>
-        <NavItem eventKey="save"> Save </NavItem>
-      </Nav>
-    );
-  }
-
-  // The actual section to be rendered for editing
-  activeSection() {
-    const { doc, user, history } = this.props;
-    const { activeSidebarItem, steps } = this.state;
-
-    if (activeSidebarItem === 'general') {
-      return (
-        <ProjectEditor
-          doc={doc}
-          history={history}
-          updateFinalMessage={this.updateFinalMessage}
-          updateTitle={this.updateTitle}
-          updateDescription={this.updateDescription}
-          updateProject={this.updateProject}
-        />
-      );
-    }
-
-    if (activeSidebarItem === 'author') {
-      return (
-        <ProjectAuthorEditor
-          author={doc.author}
-          updateAuthor={this.updateAuthor}
-        />
-      );
-    }
-
-    if (activeSidebarItem === 'settings') {
-      return (
-        <ProjectSettingsEditor
-          doc={doc}
-          user={user}
-          publish={this.publish}
-          unpublish={this.unpublish}
-        />
-      );
-    }
-
-    const stepIndex = Number(activeSidebarItem.replace('step-', '')) - 1;
-    const step = steps[stepIndex];
-
-    return (
-      <ProjectStepEditor
-        step={step}
-        content={step.content}
-        tests={step.tests}
-        index={stepIndex}
-        addStep={this.addStep}
-        removeStep={this.removeStep}
-        updateStep={this.updateStep}
-        toggleEditingStep={this.toggleEditingStep}
-        project={doc}
-      />
-    );
-  }
-
   render() {
-    const { doc, user, loading } = this.props;
-
+    const { doc, history, user, loading } = this.props;
     const userProhibited =
       !Roles.userIsInRole(user, ['admin']) && doc.createdBy !== user._id;
 
@@ -267,13 +152,40 @@ class EditProject extends React.Component {
     return (
       <div className="row">
         <div className="sidebar col-md-2">
-          <h4 className="page-header"> &nbsp; </h4> {this.sideNav()}
+          <h4 className="page-header"> &nbsp; </h4>
+          <ProjectEditorSideNav
+            activeSidebarItem={this.state.activeSidebarItem}
+            addStep={this.addStep}
+            doc={doc}
+            history={history}
+            steps={this.state.steps}
+            updateActiveSidebarItem={this.updateActiveSidebarItem}
+            updateProject={this.updateProject}
+          />
         </div>
         <div className="EditProject col-md-10">
           <h4 className="page-header">
             {`Editing "${doc.title}"`}
           </h4>
-          {this.activeSection()}
+          <ProjectEditorActiveSection
+            activeSidebarItem={this.state.activeSidebarItem}
+            addStep={this.addStep}
+            author={doc.author}
+            doc={doc}
+            history={history}
+            project={doc}
+            publish={this.publish}
+            steps={this.state.steps}
+            toggleEditingStep={this.toggleEditingStep}
+            unpublish={this.unpublish}
+            updateFinalMessage={this.updateFinalMessage}
+            updateTitle={this.updateTitle}
+            updateDescription={this.updateDescription}
+            updateProject={this.updateProject}
+            updateAuthor={this.updateAuthor}
+            user={user}
+            updateStep={this.updateStep}
+          />
         </div>
       </div>
     );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
@@ -255,18 +254,15 @@ class EditProject extends React.Component {
 
   render() {
     const { doc, user, loading } = this.props;
-    const { steps, activeSidebarItem } = this.state;
 
     const userProhibited =
       !Roles.userIsInRole(user, ['admin']) && doc.createdBy !== user._id;
 
-    if (loading) return <div />;
-
-    if (!doc) return <NotFound />;
-
     if (userProhibited) {
       return <h4>You are not authorized to edit this document.</h4>;
     }
+    if (loading) return <div />;
+    if (!doc) return <NotFound />;
 
     return (
       <div className="row">
@@ -290,12 +286,13 @@ EditProject.propTypes = {
 };
 
 export default createContainer(({ match }) => {
-  const projectId = match.params._id;
-  const subscription = Meteor.subscribe('projects.edit', projectId);
+  const idOrSlug = match.params._id;
+  const subscription = Meteor.subscribe('projects.edit', idOrSlug);
 
   return {
     loading: !subscription.ready(),
-    doc: Projects.findOne(projectId) || {},
+    doc:
+      Projects.findOne(idOrSlug) || Projects.findOne({ slug: idOrSlug }) || {},
     user: Meteor.user(),
     match,
   };

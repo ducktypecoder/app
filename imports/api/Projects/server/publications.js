@@ -17,7 +17,9 @@ Meteor.publish('projects.view', function publishProjectsView(idOrSlug) {
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
 
-  if (userIsAdmin) { return Projects.find({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] }); }
+  if (userIsAdmin) {
+    return Projects.find({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] });
+  }
 
   return Projects.find({
     $and: [
@@ -27,15 +29,19 @@ Meteor.publish('projects.view', function publishProjectsView(idOrSlug) {
   });
 });
 
-Meteor.publish('projects.edit', function publishProjectsView(projectId) {
-  check(projectId, String);
+Meteor.publish('projects.edit', function publishProjectsView(idOrSlug) {
+  check(idOrSlug, String);
 
   const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
 
-  if (userIsAdmin) return Projects.find({ _id: projectId });
+  if (userIsAdmin) {
+    return Projects.find({ $or: [{ _id: idOrSlug }, { slug: idOrSlug }] });
+  }
 
   return Projects.find({
-    _id: projectId,
-    createdBy: this.userId,
+    $and: [
+      { $or: [{ _id: idOrSlug }, { slug: idOrSlug }] },
+      { createdBy: this.userId },
+    ],
   });
 });

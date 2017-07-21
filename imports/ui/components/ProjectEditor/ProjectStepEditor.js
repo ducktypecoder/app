@@ -18,9 +18,6 @@ import CodeMirror from 'react-codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 
-import { Bert } from 'meteor/themeteorchef:bert';
-import validate from '../../../modules/validate';
-
 const wrapperStyle = {};
 const editorStyle = { border: '1px solid grey' };
 const toolbarStyle = {};
@@ -108,7 +105,9 @@ class ProjectStepEditor extends React.Component {
           editorStyle={editorStyle}
           toolbarStyle={toolbarStyle}
         />
-
+        <br />
+        <hr />
+        <h4>Tests: </h4>
         <CodeMirror
           value={tests}
           onChange={this.onTestsChange}

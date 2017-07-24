@@ -20,6 +20,7 @@ Meteor.methods({
       author: Match.Maybe(Object),
       description: Match.Maybe(String),
       finalMessage: Match.Maybe(String),
+      gitRepo: Match.Maybe(String),
       steps: Match.Maybe([Object]),
     });
 

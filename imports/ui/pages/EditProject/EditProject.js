@@ -14,6 +14,7 @@ class EditProject extends React.Component {
     this.state = {
       activeSidebarItem: 'general',
       title: props.doc.title || '',
+      gitRepo: props.doc.gitRepo || '',
       finalMessage: props.doc.finalMessage || '',
       description: props.doc.description || '',
       author: props.doc.author || {},
@@ -22,6 +23,7 @@ class EditProject extends React.Component {
 
     this.updateProject = this.updateProject.bind(this);
     this.updateAuthor = this.updateAuthor.bind(this);
+    this.updateGitRepo = this.updateGitRepo.bind(this);
     this.removeStep = this.removeStep.bind(this);
     this.updateTitle = this.updateTitle.bind(this);
     this.updateDescription = this.updateDescription.bind(this);
@@ -53,12 +55,13 @@ class EditProject extends React.Component {
       tests: s.tests,
       order: i + 1,
     }));
-    const { author, finalMessage, title, description } = this.state;
+    const { author, finalMessage, title, description, gitRepo } = this.state;
     const projectData = {
       _id: this.props.doc._id,
       steps,
       author,
       finalMessage,
+      gitRepo,
       title,
       description,
     };
@@ -83,6 +86,10 @@ class EditProject extends React.Component {
 
   updateTitle(title) {
     this.setState({ title });
+  }
+
+  updateGitRepo(gitRepo) {
+    this.setState({ gitRepo });
   }
 
   updateDescription(description) {
@@ -180,6 +187,7 @@ class EditProject extends React.Component {
             toggleEditingStep={this.toggleEditingStep}
             unpublish={this.unpublish}
             updateFinalMessage={this.updateFinalMessage}
+            updateGitRepo={this.updateGitRepo}
             updateTitle={this.updateTitle}
             updateDescription={this.updateDescription}
             updateProject={this.updateProject}

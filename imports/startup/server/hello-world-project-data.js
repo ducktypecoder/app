@@ -18,6 +18,7 @@ export default {
   title: 'Hello World',
   slug: 'hello-world',
   description: 'This is the very first ducktypecoder project',
+  gitRepo: 'https://github.com/ducktypecoder/hello-world',
   steps: [
     {
       order: 1,

@@ -17,6 +17,7 @@ export default function ProjectEditorActiveSection(props) {
     updateDescription,
     updateProject,
     updateAuthor,
+    updateGitRepo,
     publish,
     unpublish,
     addStep,
@@ -33,6 +34,7 @@ export default function ProjectEditorActiveSection(props) {
           history={history}
           updateFinalMessage={updateFinalMessage}
           updateTitle={updateTitle}
+          updateGitRepo={updateGitRepo}
           updateDescription={updateDescription}
           updateProject={updateProject}
         />

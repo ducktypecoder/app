@@ -59,6 +59,11 @@ Projects.schema = new SimpleSchema({
     label: 'Message displayed after all passing all the steps',
     optional: true,
   },
+  gitRepo: {
+    type: String,
+    label: 'URL to access an example of the completed project',
+    optional: true,
+  },
   steps: {
     type: Array,
     optional: true,

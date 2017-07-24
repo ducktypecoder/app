@@ -14,6 +14,7 @@ class ProjectEditor extends React.Component {
 
     this.state = {
       title: props.doc.title || '',
+      gitRepo: props.doc.gitRepo || '',
       description: props.doc.description || '',
       finalMessage:
         props.doc.finalMessage ||
@@ -21,6 +22,7 @@ class ProjectEditor extends React.Component {
     };
 
     this.onTitleChange = this.onTitleChange.bind(this);
+    this.onGitRepoChange = this.onGitRepoChange.bind(this);
     this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.updateFinalMessage = this.updateFinalMessage.bind(this);
   }
@@ -53,6 +55,11 @@ class ProjectEditor extends React.Component {
 
   updateFinalMessage(finalMessage) {
     this.props.updateFinalMessage(finalMessage);
+  }
+
+  onGitRepoChange() {
+    this.setState({ gitRepo: this.gitRepo.value });
+    this.props.updateGitRepo(this.gitRepo.value.trim());
   }
 
   onTitleChange() {
@@ -97,6 +104,18 @@ class ProjectEditor extends React.Component {
             name="slug"
             ref={slug => (this.slug = slug)}
             defaultValue={doc && doc.slug}
+          />
+        </FormGroup>
+        <FormGroup>
+          <ControlLabel>Git Repo</ControlLabel>
+          <input
+            type="text"
+            className="form-control"
+            name="gitRepo"
+            onChange={this.onGitRepoChange}
+            ref={gitRepo => (this.gitRepo = gitRepo)}
+            value={this.state.gitRepo}
+            placeholder="https://github.com/ducktypecoder/hello-world"
           />
         </FormGroup>
         <FormGroup>

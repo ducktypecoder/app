@@ -104,6 +104,8 @@ function ViewProject({ loading, doc, user, match }) {
           : <div />}
       </div>
       {doc.description}
+      <br />
+      <a href="{doc.gitRepo}">See the completed example here</a>
       <ViewProjectAuthor author={doc.author} />
       {renderSteps(doc)}
     </div>

@@ -53,5 +53,11 @@ export default function setupApi() {
     }
   });
 
+  app.post('/api/publish', (req, res) => {
+    console.log('POST /api/publish');
+
+    return res.status(201).json({ success: true });
+  });
+
   WebApp.connectHandlers.use(app); // eslint-disable-line
 }

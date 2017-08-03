@@ -10,6 +10,7 @@ import Authenticated from '../../components/Authenticated/Authenticated';
 import Public from '../../components/Public/Public';
 import Index from '../../pages/Index/Index';
 
+import Docs from '../../pages/Docs/Docs';
 import Projects from '../../pages/Projects/Projects';
 import ViewProject from '../../pages/ViewProject/ViewProject';
 import NewProject from '../../pages/NewProject/NewProject';
@@ -41,6 +42,7 @@ const App = props => (
       <Grid>
         <Switch>
           <Route exact name="index" path="/" component={Index} />
+          <Route exact path="/docs" component={Docs} {...props} />
           <Route exact path="/projects" component={Projects} {...props} />
           <Authenticated exact path="/projects/new" component={NewProject} {...props} />
           <Route exact path="/projects/:_id" component={ViewProject} {...props} />

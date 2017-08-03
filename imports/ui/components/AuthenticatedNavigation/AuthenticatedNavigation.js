@@ -7,6 +7,11 @@ import { Meteor } from 'meteor/meteor';
 const AuthenticatedNavigation = ({ name }) =>
   (<div>
     <Nav>
+      <Nav>
+        <LinkContainer to="/docs">
+          <NavItem href="/docs">Docs</NavItem>
+        </LinkContainer>
+      </Nav>
       <LinkContainer to="/projects">
         <NavItem href="/projects">Projects</NavItem>
       </LinkContainer>

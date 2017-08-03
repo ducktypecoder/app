@@ -5,16 +5,25 @@ import { Nav, NavItem } from 'react-bootstrap';
 const PublicNavigation = () =>
   (<div>
     <Nav>
+      <LinkContainer to="/docs">
+        <NavItem href="/docs">Docs</NavItem>
+      </LinkContainer>
+    </Nav>
+    <Nav>
       <LinkContainer to="/projects">
         <NavItem href="/projects">Projects</NavItem>
       </LinkContainer>
     </Nav>
     <Nav pullRight>
       <LinkContainer to="/signup">
-        <NavItem eventKey={1} href="/signup">Sign Up</NavItem>
+        <NavItem eventKey={1} href="/signup">
+          Sign Up
+        </NavItem>
       </LinkContainer>
       <LinkContainer to="/login">
-        <NavItem eventKey={2} href="/login">Log In</NavItem>
+        <NavItem eventKey={2} href="/login">
+          Log In
+        </NavItem>
       </LinkContainer>
     </Nav>
   </div>);

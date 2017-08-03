@@ -56,6 +56,9 @@ export default function setupApi() {
   app.post('/api/publish', (req, res) => {
     console.log('POST /api/publish');
 
+    const repo = req.body.repo;
+
+    console.log('Attempting to publish repo: ', repo);
     return res.status(201).json({ success: true });
   });
 

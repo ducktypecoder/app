@@ -33,8 +33,8 @@ function Index() {
         <code>$ ducktypecoder next</code>
       </p>
       <div className="main-action">
-        <Link to="/projects/hello-world" className="btn btn-success btn-lg">
-          &rarr; See an example project
+        <Link to="/docs" className="btn btn-success btn-lg">
+          &rarr; Read the docs
         </Link>
       </div>
     </div>

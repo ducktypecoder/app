@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 import checkAnswer from '../../api/Projects/server/check-answer';
 import getCurrentStep from '../../api/Projects/server/get-current-step';
+import publishProject from '../../api/Projects/server/publish-project';
 
 export default function setupApi() {
   const app = express();
@@ -56,7 +57,14 @@ export default function setupApi() {
   app.post('/api/publish', (req, res) => {
     console.log('POST /api/publish');
 
-    const repo = req.body.repo;
+    try {
+      const repo = req.body.repo;
+
+      const result = publishProject(repo);
+      return res.status(201).json(result);
+    } catch (e) {
+      return res.status(400).json({ error: e.message, success: false });
+    }
 
     console.log('Attempting to publish repo: ', repo);
     return res.status(201).json({ success: true });

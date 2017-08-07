@@ -3,6 +3,9 @@ const gh = require('parse-github-url');
 
 const github = new GitHubApi({
   debug: false,
+  headers: {
+    'user-agent': 'Ducktypecoder-App', // GitHub is happy with a unique user agent
+  },
   Promise: require('bluebird'),
   timeout: 5000,
 });

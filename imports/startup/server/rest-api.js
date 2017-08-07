@@ -54,13 +54,16 @@ export default function setupApi() {
     }
   });
 
-  app.post('/api/publish', (req, res) => {
+  app.post('/api/publish', async (req, res) => {
     console.log('POST /api/publish');
 
     try {
       const repo = req.body.repo;
 
-      const result = publishProject(repo);
+      const result = await publishProject(repo);
+
+      console.log({ result });
+
       return res.status(201).json(result);
     } catch (e) {
       return res.status(400).json({ error: e.message, success: false });

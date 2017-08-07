@@ -75,6 +75,17 @@ Meteor.methods({
     const result = Projects.insert(data);
     return result;
   },
+  'projects.remove': function removeProject(idOrSlug) {
+    check(idOrSlug, String);
+
+    const userIsAdmin = Roles.userIsInRole(this.userId, ['admin']);
+
+    if (!userIsAdmin) return;
+
+    Projects.remove({
+      $or: [{ _id: idOrSlug }, { slug: idOrSlug }],
+    });
+  },
 });
 
 // rateLimit({

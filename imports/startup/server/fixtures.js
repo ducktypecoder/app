@@ -5,6 +5,7 @@ import Projects from '../../api/Projects/Projects';
 import helloWorldProjectData from './hello-world-project-data';
 
 const projectSeed = userId => ({
+  // wipe: true,
   collection: Projects,
   environments: ['development', 'staging'],
   modelCount: 1,
@@ -12,8 +13,9 @@ const projectSeed = userId => ({
     return Object.assign(
       {},
       {
-        title: 'Project by ${userId}',
-        slug: 'project-by-${userId}',
+        gitRepo: `github/${userId}/hello-${userId}`,
+        title: `Project by ${userId}`,
+        slug: `project-by-${userId}`,
         createdBy: userId,
         draft: true,
       },

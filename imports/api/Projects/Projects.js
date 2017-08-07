@@ -19,13 +19,20 @@ Projects.deny({
 });
 
 Projects.schema = new SimpleSchema({
-  draft: {
-    type: Boolean,
-    label: 'Projects should begin as drafts',
-  },
-  createdBy: {
+  gitRepo: {
     type: String,
-    label: 'The project creator',
+    label: 'URL to access an example of the completed project',
+    unique: true,
+  },
+  title: {
+    type: String,
+    label: 'The title of the project.',
+    unique: true,
+  },
+  slug: {
+    type: String,
+    label: "The project's slug",
+    unique: true,
   },
   createdAt: {
     type: String,
@@ -41,13 +48,15 @@ Projects.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     },
   },
-  title: {
-    type: String,
-    label: 'The title of the project.',
+  draft: {
+    type: Boolean,
+    label: 'Projects should begin as drafts',
+    optional: true,
   },
-  slug: {
+  createdBy: {
     type: String,
-    label: "The project's slug",
+    label: 'The project creator',
+    optional: true,
   },
   description: {
     type: String,
@@ -57,11 +66,6 @@ Projects.schema = new SimpleSchema({
   finalMessage: {
     type: String,
     label: 'Message displayed after all passing all the steps',
-    optional: true,
-  },
-  gitRepo: {
-    type: String,
-    label: 'URL to access an example of the completed project',
     optional: true,
   },
   steps: {

@@ -37,3 +37,5 @@ meteortoys:allthings
 dburles:collection-helpers
 practicalmeteor:chai
 practicalmeteor:mocha
+aldeed:schema-index
+hwillson:stub-collections

@@ -7,21 +7,19 @@ const github = new GitHubApi({
   timeout: 5000,
 });
 
-export default function getProjectConfigFromGithub(repoGitUrl) {
+export default (async function getProjectConfigFromGithub(repoGitUrl) {
+  console.log('getProjectConfigFromGithub');
   const { owner, name } = gh(repoGitUrl);
 
-  return github.repos
-    .getContent({
-      owner,
-      repo: name,
-      path: '/ducktypecoder/config.json',
-      // ref: 'master',
-    })
-    .then((result) => {
-      const encodedContent = result.data.content;
-      const decodedBuffer = Buffer.from(encodedContent, 'base64');
-      const decodedContent = decodedBuffer.toString('ascii');
-      return JSON.parse(decodedContent);
-    })
-    .then(config => config);
-}
+  const result = await github.repos.getContent({
+    owner,
+    repo: name,
+    path: '/ducktypecoder/config.json',
+  });
+  const encodedContent = result.data.content;
+  const decodedBuffer = Buffer.from(encodedContent, 'base64');
+  const decodedContent = decodedBuffer.toString('ascii');
+  const config = JSON.parse(decodedContent);
+
+  return config;
+});

@@ -3,26 +3,16 @@ import getProjectConfigFromGithub from './get-project-config-from-github';
 import Projects from '../Projects';
 
 export default (async function publishProject(repo) {
-  const config = await getProjectConfigFromGithub(repo);
+  const projectConfig = await getProjectConfigFromGithub(repo);
 
-  // validate project
-  //  - uniqueness of repo
-  //  - uniqueness of name
-  //  - uniqueness of slug
-
-  // save project data:
-  //  - github repo
-  //  - projectName
-  //  - slugified name
-
-  Projects.insert({
+  const projectId = Projects.insert({
     gitRepo: repo,
-    title: config.name,
-    slug: slugify(config.name),
+    title: projectConfig.name,
+    slug: slugify(projectConfig.name),
   });
 
   return {
     success: true,
-    config,
+    projectId,
   };
 });

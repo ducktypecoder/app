@@ -6,6 +6,14 @@ export const Meteor = {
 export const Mongo = {
   Collection: name => ({
     name,
+    allow() {
+      return null;
+    },
+    deny() {
+      return null;
+    },
+    attachSchema() {
+      return null;
+    },
   }),
-  allow: () => null,
 };

@@ -3,16 +3,19 @@ import getProjectConfigFromGithub from './get-project-config-from-github';
 import Projects from '../Projects';
 
 export default (async function publishProject(repo) {
-  const projectConfig = await getProjectConfigFromGithub(repo);
+  try {
+    const projectConfig = await getProjectConfigFromGithub(repo);
+    const { projectName } = projectConfig;
 
-  const projectId = Projects.insert({
-    gitRepo: repo,
-    title: projectConfig.name,
-    slug: slugify(projectConfig.name),
-  });
+    // https://blog.meteor.com/using-promises-and-async-await-in-meteor-8f6f4a04f998
+    await Projects.rawCollection().insert({
+      gitRepo: repo,
+      title: projectName,
+      slug: slugify(projectName),
+    });
 
-  return {
-    success: true,
-    projectId,
-  };
+    return { success: true };
+  } catch (e) {
+    console.error({ e });
+  }
 });

@@ -7,9 +7,10 @@ import Projects from '../Projects';
 export default (async function publishProject(repo) {
   try {
     const projectConfig = await getProjectConfigFromGithub(repo);
-    const { projectName, author } = projectConfig;
+    const { projectName, author, githubUrl } = projectConfig;
     const projectData = {
       gitRepo: repo,
+      githubUrl,
       title: projectName,
       slug: slugify(projectName),
       author,

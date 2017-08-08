@@ -21,6 +21,11 @@ Projects.deny({
 Projects.schema = new SimpleSchema({
   gitRepo: {
     type: String,
+    label: 'git URL to clone, push and fetch repo',
+    unique: true,
+  },
+  githubUrl: {
+    type: String,
     label: 'URL to access an example of the completed project',
     unique: true,
   },

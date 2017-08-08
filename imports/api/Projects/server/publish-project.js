@@ -18,6 +18,20 @@ export default (async function publishProject(repo) {
 
     return { success: true };
   } catch (e) {
-    console.error({ e });
+    if (e.message.includes('gitRepo dup key')) {
+      return {
+        success: false,
+        error: 'A project already exists with that git repo.',
+      };
+    }
+
+    if (e.message.includes('title dup key')) {
+      return {
+        success: false,
+        error: 'A project already exists with that name.',
+      };
+    }
+
+    return { success: false, error: e.message };
   }
 });

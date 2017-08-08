@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
+import parseMarkdown from '../../../modules/parse-markdown';
 import Projects from '../../../api/Projects/Projects';
 import NotFound from '../NotFound/NotFound';
 import Loading from '../../components/Loading/Loading';
@@ -55,7 +56,7 @@ function answeredSteps(nextUnansweredStep, project) {
 function renderStepContent(content) {
   return (<div>
     <hr />
-    <div dangerouslySetInnerHTML={{ __html: content }} />
+    <div dangerouslySetInnerHTML={{ __html: parseMarkdown(content) }} />
   </div>);
 }
 
@@ -103,7 +104,9 @@ function ViewProject({ loading, doc, user, match }) {
             </Link>
           : <div />}
       </div>
-      {doc.description}
+      <div
+        dangerouslySetInnerHTML={{ __html: parseMarkdown(doc.description) }}
+      />
       <br />
       <a href={doc.githubUrl}>See the project on github</a>
       <ViewProjectAuthor author={doc.author} />

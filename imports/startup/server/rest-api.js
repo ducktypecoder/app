@@ -57,7 +57,8 @@ export default function setupApi() {
   app.post('/api/publish', async (req, res) => {
     try {
       const repo = req.body.repo;
-      const result = await publishProject(repo);
+      const content = req.body.content;
+      const result = await publishProject(repo, content);
 
       return res.status(201).json(result);
     } catch (e) {

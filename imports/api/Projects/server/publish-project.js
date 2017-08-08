@@ -3,17 +3,30 @@ import slugify from '../../Utility/slugify';
 import getProjectConfigFromGithub from './get-project-config-from-github';
 import Projects from '../Projects';
 
+function stepContent(content) {
+  return content.steps.map((s, i) => ({
+    order: i + 1,
+    content: s.content,
+  }));
+}
+
 // https://blog.meteor.com/using-promises-and-async-await-in-meteor-8f6f4a04f998
-export default (async function publishProject(repo) {
+export default (async function publishProject(repo, content) {
   try {
     const projectConfig = await getProjectConfigFromGithub(repo);
     const { projectName, author, githubUrl } = projectConfig;
+
+    // TODO: validate that the content is not dangerous HTML like script tags,
+    // so we can display it in the web app view.
     const projectData = {
       gitRepo: repo,
       githubUrl,
       title: projectName,
       slug: slugify(projectName),
       author,
+      finalMessage: content.conclusion,
+      description: content.introduction,
+      steps: stepContent(content),
     };
 
     // QUESTION: what if we want to find by the git repo, but change the name?
@@ -21,6 +34,8 @@ export default (async function publishProject(repo) {
       slug: slugify(projectName),
       gitRepo: repo,
     });
+
+    console.log({ projectData });
 
     // update the existing
     if (existingProject) {

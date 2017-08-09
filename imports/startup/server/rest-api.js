@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import Projects from '../../api/Projects/Projects';
+
 import checkAnswer from '../../api/Projects/server/check-answer';
 import getCurrentStep from '../../api/Projects/server/get-current-step';
 import publishProject from '../../api/Projects/server/publish-project';
@@ -14,6 +16,20 @@ export default function setupApi() {
 
   app.get('/api/', (req, res) => {
     res.status(200).json({ message: 'Hello World!!!' });
+  });
+
+  app.get('/api/project-repo', async (req, res) => {
+    const slug = req.query.slug;
+    const project = await Projects.rawCollection().findOne({ slug });
+
+    if (!project) {
+      res.status(204).json({
+        success: false,
+        error: `Sorry, we could not find a project with that info (${slug}).`,
+      });
+    }
+
+    res.status(200).json({ success: true, repo: project.gitRepo });
   });
 
   // When the user's client submits an answer,

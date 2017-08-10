@@ -21,41 +21,72 @@ class Login extends React.Component {
       rules: {
         emailAddress: {
           required: true,
-          email: true,
+          email: true
         },
         password: {
-          required: true,
-        },
+          required: true
+        }
       },
       messages: {
         emailAddress: {
           required: 'Need an email address here.',
-          email: 'Is this email address correct?',
+          email: 'Is this email address correct?'
         },
         password: {
-          required: 'Need a password here.',
-        },
+          required: 'Need a password here.'
+        }
       },
       submitHandler() {
         component.handleSubmit();
-      },
+      }
     });
   }
 
   handleSubmit() {
     const { history } = this.props;
 
+    async function handleCommandLineCallback(queryState, callbackUrl) {
+      // https://blog.meteor.com/dynamic-imports-in-meteor-1-5-c6130419c3cd
+      const user = Meteor.user();
+      const axios = await import('axios');
+      console.log({ queryState, callbackUrl, user });
+      const response = await axios.get(callbackUrl, {
+        params: {
+          code: user._id.toString(), // TODO: send back a jwt
+          state: queryState
+        }
+      });
+
+      console.log({ response });
+      Bert.alert('You are now logged in on the command line!', 'success');
+      history.push('/projects');
+    }
+
     Meteor.loginWithPassword(
       this.emailAddress.value,
       this.password.value,
-      (error) => {
-        if (error) {
-          Bert.alert(error.reason, 'danger');
+      error => {
+        if (error) return Bert.alert(error.reason, 'danger');
+
+        function getParameterByName(name) {
+          const match = new RegExp(`[?&]${name}=([^&]*)`).exec(
+            window.location.search
+          );
+          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+
+        // if we are logging in from the CLI,the request query will have 'state' and 'callbackUrl'
+        // send back to the callbackUrl, the same 'state' and also the user tokens and redirect to 'great you can go back to the CLI now!'
+        const queryState = getParameterByName('state');
+        const callbackUrl = getParameterByName('callbackUrl');
+
+        if (queryState && callbackUrl) {
+          handleCommandLineCallback(queryState, callbackUrl);
         } else {
           Bert.alert('Welcome back!', 'success');
           history.push('/projects');
         }
-      },
+      }
     );
   }
 
@@ -71,7 +102,7 @@ class Login extends React.Component {
                   services={['facebook', 'github', 'google']}
                   emailMessage={{
                     offset: 100,
-                    text: 'Log In with an Email Address',
+                    text: 'Log In with an Email Address'
                   }}
                 />
               </Col>
@@ -120,7 +151,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default Login;

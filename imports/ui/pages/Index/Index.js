@@ -24,9 +24,7 @@ function Index() {
       </p>
       <p>Second, start a tutorial</p>
       <p>
-        <code>
-          $ ducktypecoder start https://github.com/ducktypecoder/hello-world
-        </code>
+        <code>$ ducktypecoder start hello-world</code>
       </p>
       <p>Follow the instructions. Run ducktypecoder for the next step:</p>
       <p>

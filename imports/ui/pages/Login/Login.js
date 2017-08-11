@@ -7,6 +7,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import OAuthLoginButtons from '../../components/OAuthLoginButtons/OAuthLoginButtons';
 import AccountPageFooter from '../../components/AccountPageFooter/AccountPageFooter';
 import validate from '../../../modules/validate';
+import getParameterByName from '../../../api/Utility/get-parameter-by-name';
 
 class Login extends React.Component {
   constructor(props) {
@@ -46,12 +47,12 @@ class Login extends React.Component {
     const { history } = this.props;
 
     async function handleCommandLineCallback(queryState, callbackUrl) {
-      const axios = await import('axios');
       // NOTE: const token = await Meteor.call(...) <-- broken.
       Meteor.call('users.getJwtAccessToken', async (err, token) => {
-        const response = await axios.get(
-          `${callbackUrl}?code=${token}&state=${queryState}`
-        );
+        const axios = await import('axios');
+
+        // TODO: receive response from CLI client and handle any errors...
+        axios.get(`${callbackUrl}?code=${token}&state=${queryState}`);
 
         Bert.alert('You are now logged in on the command line!', 'success');
         history.push('/projects');
@@ -63,13 +64,6 @@ class Login extends React.Component {
       this.password.value,
       error => {
         if (error) return Bert.alert(error.reason, 'danger');
-
-        function getParameterByName(name) {
-          const match = new RegExp(`[?&]${name}=([^&]*)`).exec(
-            window.location.search
-          );
-          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-        }
 
         // if we are logging in from the CLI,the request query will have 'state' and 'callbackUrl'
         // send back to the callbackUrl, the same 'state' and also the user tokens and redirect to 'great you can go back to the CLI now!'
@@ -95,7 +89,7 @@ class Login extends React.Component {
             <Row>
               <Col xs={12}>
                 <OAuthLoginButtons
-                  services={['facebook', 'github', 'google']}
+                  services={['github']}
                   emailMessage={{
                     offset: 100,
                     text: 'Log In with an Email Address'

@@ -14,8 +14,8 @@
         "loginStyle": "popup"
       },
       "github": {
-        "clientId": "",
-        "secret": "",
+        "clientId": "12e66ce9e23dce62c52e",
+        "secret": "26c5e54427d70830bb9595d868d0aba2cfdab05e",
         "loginStyle": "popup"
       }
     }

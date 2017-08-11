@@ -22,6 +22,7 @@
     "github": "^9.2.0",
     "jquery": "^2.2.4",
     "jquery-validation": "^1.16.0",
+    "jsonwebtoken": "^7.4.2",
     "meteor-node-stubs": "~0.2.4",
     "parse-github-url": "^1.0.0",
     "prop-types": "^15.5.10",
@@ -63,7 +64,10 @@
         "jsx": true
       }
     },
-    "plugins": ["meteor", "react"],
+    "plugins": [
+      "meteor",
+      "react"
+    ],
     "extends": [
       "airbnb",
       "plugin:meteor/recommended",
@@ -101,6 +105,8 @@
       "^meteor/(.*)": "<rootDir>/meteorMocks.js",
       "\\.(css)$": "<rootDir>/node_modules/jest-css-modules"
     },
-    "snapshotSerializers": ["jest-serializer-enzyme"]
+    "snapshotSerializers": [
+      "jest-serializer-enzyme"
+    ]
   }
 }

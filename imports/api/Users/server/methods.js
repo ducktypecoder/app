@@ -12,14 +12,14 @@ Meteor.methods({
       profile: {
         name: {
           first: String,
-          last: String,
-        },
-      },
+          last: String
+        }
+      }
     });
 
     return editProfile({ userId: this.userId, profile })
       .then(response => response)
-      .catch((exception) => {
+      .catch(exception => {
         throw new Meteor.Error('500', exception);
       });
   },
@@ -28,8 +28,8 @@ Meteor.methods({
     Meteor.users.update(
       { _id: this.userId },
       {
-        $set: { token: newToken },
-      },
+        $set: { token: newToken }
+      }
     );
   },
   // TODO: method to seed an admin user
@@ -42,10 +42,33 @@ Meteor.methods({
   //
   //   Meteor.
   // }
+  'users.getJwtAccessToken': async function loginFromCommandLine() {
+    if (!this.userId) {
+      throw new Meteor.Error(
+        'You need to be logged in on the web app to get an access token.'
+      );
+    }
+
+    const jwt = await import('jsonwebtoken');
+    const getJwtAccessToken = await import('./get-jwt-secret-key');
+    const JWT_SECRET_KEY = getJwtAccessToken.default;
+    const userDoc = await Meteor.users.rawCollection().findOne(
+      { _id: this.userId },
+      {
+        fields: { _id: 1, emails: 1 }
+      }
+    );
+    const userData = { _id: userDoc._id, email: userDoc.emails[0].address };
+    const token = jwt.sign({ user: userData }, JWT_SECRET_KEY);
+
+    console.log(token);
+
+    return token;
+  }
 });
 
 rateLimit({
   methods: ['users.editProfile'],
   limit: 5,
-  timeRange: 1000,
+  timeRange: 1000
 });

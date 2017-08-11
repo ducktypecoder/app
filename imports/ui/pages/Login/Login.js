@@ -46,20 +46,16 @@ class Login extends React.Component {
     const { history } = this.props;
 
     async function handleCommandLineCallback(queryState, callbackUrl) {
-      // https://blog.meteor.com/dynamic-imports-in-meteor-1-5-c6130419c3cd
-      const user = Meteor.user();
       const axios = await import('axios');
-      console.log({ queryState, callbackUrl, user });
-      const response = await axios.get(callbackUrl, {
-        params: {
-          code: user._id.toString(), // TODO: send back a jwt
-          state: queryState
-        }
-      });
+      // NOTE: const token = await Meteor.call(...) <-- broken.
+      Meteor.call('users.getJwtAccessToken', async (err, token) => {
+        const response = await axios.get(
+          `${callbackUrl}?code=${token}&state=${queryState}`
+        );
 
-      console.log({ response });
-      Bert.alert('You are now logged in on the command line!', 'success');
-      history.push('/projects');
+        Bert.alert('You are now logged in on the command line!', 'success');
+        history.push('/projects');
+      });
     }
 
     Meteor.loginWithPassword(

@@ -1,22 +1,48 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 import express from 'express';
 import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
 
 import Projects from '../../api/Projects/Projects';
 
 import checkAnswer from '../../api/Projects/server/check-answer';
 import getCurrentStep from '../../api/Projects/server/get-current-step';
 import publishProject from '../../api/Projects/server/publish-project';
+import getJwtSecretKey from '../../api/Users/server/get-jwt-secret-key';
+
+function authenticate(req, res, next) {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(400).json({
+      error: 'You must be logged in to publish a project',
+      success: false,
+    });
+  }
+
+  return next();
+}
 
 export default function setupApi() {
   const app = express();
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
+  app.use(
+    Meteor.bindEnvironment(async (req, res, next) => {
+      const authToken = req.get('Authorization');
 
-  app.get('/api/', (req, res) => {
-    res.status(200).json({ message: 'Hello World!!!' });
-  });
+      if (!authToken) return next();
+
+      const decoded = jwt.verify(authToken, getJwtSecretKey);
+      const email = decoded.user.email;
+
+      req.user = await Accounts.findUserByEmail(email);
+
+      return next();
+    }),
+  );
 
   app.get('/api/project-repo', async (req, res) => {
     const slug = req.query.slug;
@@ -70,7 +96,7 @@ export default function setupApi() {
     }
   });
 
-  app.post('/api/publish', async (req, res) => {
+  app.post('/api/publish', authenticate, async (req, res) => {
     try {
       const repo = req.body.repo;
       const content = req.body.content;

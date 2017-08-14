@@ -55,7 +55,7 @@ export default function setupApi() {
       });
     }
 
-    res.status(200).json({ success: true, repo: project.gitRepo });
+    res.status(200).json({ success: true, repo: project.githubUrl });
   });
 
   // When the user's client submits an answer,

@@ -81,6 +81,12 @@ class Login extends React.Component {
   }
 
   render() {
+    const queryState = getParameterByName('state');
+    const callbackUrl = getParameterByName('callbackUrl');
+    let signupUrl = '/signup';
+    if (queryState && callbackUrl)
+      signupUrl += `?state=${queryState}&callbackUrl=${callbackUrl}`;
+
     return (
       <div className="Login">
         <Row>
@@ -129,7 +135,7 @@ class Login extends React.Component {
               </Button>
               <AccountPageFooter>
                 <p>
-                  {"Don't have an account?"} <Link to="/signup">Sign Up</Link>.
+                  {"Don't have an account?"} <Link to={signupUrl}>Sign Up</Link>.
                 </p>
               </AccountPageFooter>
             </form>

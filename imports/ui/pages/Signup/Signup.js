@@ -9,6 +9,7 @@ import OAuthLoginButtons from '../../components/OAuthLoginButtons/OAuthLoginButt
 import InputHint from '../../components/InputHint/InputHint';
 import AccountPageFooter from '../../components/AccountPageFooter/AccountPageFooter';
 import validate from '../../../modules/validate';
+import getParameterByName from '../../../api/Utility/get-parameter-by-name';
 
 class Signup extends React.Component {
   constructor(props) {
@@ -22,44 +23,57 @@ class Signup extends React.Component {
     validate(component.form, {
       rules: {
         firstName: {
-          required: true,
+          required: true
         },
         lastName: {
-          required: true,
+          required: true
         },
         emailAddress: {
           required: true,
-          email: true,
+          email: true
         },
         password: {
           required: true,
-          minlength: 6,
-        },
+          minlength: 6
+        }
       },
       messages: {
         firstName: {
-          required: "What's your first name?",
+          required: "What's your first name?"
         },
         lastName: {
-          required: "What's your last name?",
+          required: "What's your last name?"
         },
         emailAddress: {
           required: 'Need an email address here.',
-          email: 'Is this email address correct?',
+          email: 'Is this email address correct?'
         },
         password: {
           required: 'Need a password here.',
-          minlength: 'Please use at least six characters.',
-        },
+          minlength: 'Please use at least six characters.'
+        }
       },
       submitHandler() {
         component.handleSubmit();
-      },
+      }
     });
   }
 
   handleSubmit() {
     const { history } = this.props;
+
+    async function handleCommandLineCallback(queryState, callbackUrl) {
+      // NOTE: const token = await Meteor.call(...) <-- broken.
+      Meteor.call('users.getJwtAccessToken', async (err, token) => {
+        const axios = await import('axios');
+
+        // TODO: receive response from CLI client and handle any errors...
+        axios.get(`${callbackUrl}?code=${token}&state=${queryState}`);
+
+        Bert.alert('You are now logged in on the command line!', 'success');
+        history.push('/projects');
+      });
+    }
 
     Accounts.createUser(
       {
@@ -68,23 +82,31 @@ class Signup extends React.Component {
         profile: {
           name: {
             first: this.firstName.value,
-            last: this.lastName.value,
-          },
-        },
+            last: this.lastName.value
+          }
+        }
       },
-      (error) => {
+      error => {
         if (error) {
           Bert.alert(error.reason, 'danger');
+        } else if (queryState && callbackUrl) {
+          handleCommandLineCallback(queryState, callbackUrl);
         } else {
           Bert.alert('Welcome!', 'success');
           Meteor.call('users.resetToken');
           history.push('/projects');
         }
-      },
+      }
     );
   }
 
   render() {
+    const queryState = getParameterByName('state');
+    const callbackUrl = getParameterByName('callbackUrl');
+    let loginUrl = '/login';
+    if (queryState && callbackUrl)
+      loginUrl += `?state=${queryState}&callbackUrl=${callbackUrl}`;
+
     return (
       <div className="Signup">
         <Row>
@@ -93,10 +115,10 @@ class Signup extends React.Component {
             <Row>
               <Col xs={12}>
                 <OAuthLoginButtons
-                  services={['facebook', 'github', 'google']}
+                  services={['github']}
                   emailMessage={{
                     offset: 97,
-                    text: 'Sign Up with an Email Address',
+                    text: 'Sign Up with an Email Address'
                   }}
                 />
               </Col>
@@ -153,7 +175,7 @@ class Signup extends React.Component {
               </Button>
               <AccountPageFooter>
                 <p>
-                  Already have an account? <Link to="/login">Log In</Link>.
+                  Already have an account? <Link to={loginUrl}>Log In</Link>.
                 </p>
               </AccountPageFooter>
             </form>
@@ -165,7 +187,7 @@ class Signup extends React.Component {
 }
 
 Signup.propTypes = {
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default Signup;

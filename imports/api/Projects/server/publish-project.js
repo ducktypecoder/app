@@ -11,7 +11,7 @@ function stepContent(content) {
 }
 
 // https://blog.meteor.com/using-promises-and-async-await-in-meteor-8f6f4a04f998
-export default (async function publishProject(repo, content) {
+export default (async function publishProject(repo, content, user) {
   try {
     const projectConfig = await getProjectConfigFromGithub(repo);
     const { projectName, author, githubUrl } = projectConfig;
@@ -35,7 +35,15 @@ export default (async function publishProject(repo, content) {
       gitRepo: repo,
     });
 
-    console.log({ projectData });
+    const userNotAuthorized =
+      existingProject && existingProject.createdBy !== user._id;
+
+    if (userNotAuthorized) {
+      return {
+        success: false,
+        error: 'You can only update your own projects.',
+      };
+    }
 
     // update the existing
     if (existingProject) {
@@ -50,6 +58,7 @@ export default (async function publishProject(repo, content) {
 
     // Else, create the new project
     projectData._id = Random.id(); // using rawCollection, we need to manually set the document's _id
+    projectData.createdBy = user._id;
     await Projects.rawCollection().insert(projectData);
 
     return { success: true };

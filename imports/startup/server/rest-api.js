@@ -100,7 +100,8 @@ export default function setupApi() {
     try {
       const repo = req.body.repo;
       const content = req.body.content;
-      const result = await publishProject(repo, content);
+      const user = req.user;
+      const result = await publishProject(repo, content, user);
 
       return res.status(201).json(result);
     } catch (e) {

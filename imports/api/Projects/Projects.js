@@ -39,6 +39,11 @@ Projects.schema = new SimpleSchema({
     label: "The project's slug",
     unique: true,
   },
+  createdBy: {
+    type: String,
+    label: 'The project creator',
+    optional: true,
+  },
   createdAt: {
     type: String,
     label: 'The date this project was created.',
@@ -56,11 +61,6 @@ Projects.schema = new SimpleSchema({
   draft: {
     type: Boolean,
     label: 'Projects should begin as drafts',
-    optional: true,
-  },
-  createdBy: {
-    type: String,
-    label: 'The project creator',
     optional: true,
   },
   description: {

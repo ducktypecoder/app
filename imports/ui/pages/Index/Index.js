@@ -13,7 +13,7 @@ function Index() {
           src="http://www.animatedimages.org/data/media/481/animated-duck-image-0065.gif"
           alt="little rubber ducky"
         />
-        <p>
+        <p id="landing_page_headline">
           Simple platform for authoring and following software development
           tutorials
         </p>

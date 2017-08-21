@@ -18,22 +18,26 @@ function Index() {
           tutorials
         </p>
       </div>
-      <p>First, install the ducktypecoder package</p>
+      <hr />
+      <p>Install the ducktypecoder package:</p>
       <p>
-        <code>$ npm i -g ducktypecoder</code>
+        <kbd>$ npm i -g ducktypecoder</kbd>
       </p>
-      <p>Second, start a tutorial</p>
+      <p>Start a tutorial:</p>
       <p>
-        <code>$ ducktypecoder start hello-world</code>
+        <kbd>$ ducktypecoder start hello-world</kbd>
       </p>
-      <p>Follow the instructions. Run ducktypecoder for the next step:</p>
+      <p>Follow the instructions and go to the next step:</p>
       <p>
-        <code>$ ducktypecoder next</code>
+        <kbd>$ ducktypecoder next</kbd>
       </p>
-      <div className="main-action">
-        <Link to="/docs" className="btn btn-success btn-lg">
-          &rarr; Read the docs
-        </Link>
+
+      <div className="main-action-container">
+        <div className="main-action">
+          <Link to="/docs" className="btn btn-success btn-lg btn-CTA">
+            &rarr; Read the docs
+          </Link>
+        </div>
       </div>
     </div>
   );

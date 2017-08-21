@@ -3,21 +3,26 @@
 
 .Index {
   padding: 20px;
-  text-align: center;
+  // text-align: center;
   border-radius: 3px;
   color: #fff;
-  background: $cb-blue;
+  // background: $cb-blue;
 
   .hero {
     width: 100%;
-    background: $cb-blue;
+    text-align: center;
+    // background: $cb-blue;
   }
 
+  .main-action-container {
+    width: 100%;
+    text-align: center;
+  }
   .main-action {
     padding-top: 30px;
 
     a {
-      color: lighten($cb-blue, 35%);
+      color: #000;
     }
   }
 
@@ -28,16 +33,17 @@
 
   h1 {
     font-size: 28px;
+    color: #000;
   }
 
   p {
     font-size: 18px;
-    color: lighten($cb-blue, 35%);
+    color: #000;
   }
 
   p a {
     font-size: 24px;
-    color: lighten($cb-blue, 35%);
+    color: #000;
   }
 
   > div {
@@ -50,6 +56,19 @@
 
     .btn {
       border: none;
+    }
+
+    .btn-CTA {
+      border: 2px solid #000;
+      background: #fff;
+
+      a {
+        color: #000;
+      }
+
+      &:hover {
+        background: #e5efff;
+      }
     }
   }
 

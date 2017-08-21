@@ -3,14 +3,14 @@
 
 Start a tutorial and ducktypecoder will help you step-by-step, testing your code as you go.
 
-## *ducktypecoder* start \<url\>
+## *ducktypecoder* start \<slug-or-url\>
 
-Given a url that points to a ducktypecoder project, command clones that project, checks out a 'working' branch, and instructs you to change into that new directory.
+Given a project slug like 'hello-world' or a url that points to a ducktypecoder git repo, this command clones that project, checks out a 'working' branch, and instructs you to change into that new directory.
 
 Example:
 
 ```
-$ ducktypecoder start https://github.com/ducktypecoder/hello-world
+$ ducktypecoder start hello-world
 ```
 
 ## *ducktypecoder* next

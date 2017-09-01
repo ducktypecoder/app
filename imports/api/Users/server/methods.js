@@ -55,13 +55,15 @@ Meteor.methods({
     const userDoc = await Meteor.users.rawCollection().findOne(
       { _id: this.userId },
       {
-        fields: { _id: 1, emails: 1 }
+        fields: { _id: 1, emails: 1, profile: 1 }
       }
     );
-    const userData = { _id: userDoc._id, email: userDoc.emails[0].address };
-    const token = jwt.sign({ user: userData }, JWT_SECRET_KEY);
+    const userData = { _id: userDoc._id };
+    if (userDoc.emails) userData.email = userDoc.emails[0].address;
+    if (userDoc.profile && userDoc.profile.name)
+      userData.name = userDoc.profile.name;
 
-    console.log(token);
+    const token = jwt.sign({ user: userData }, JWT_SECRET_KEY);
 
     return token;
   }
